@@ -5,7 +5,7 @@ export default async function handler(req, res) {
 
   try {
     const response = await fetch(
-      `${SUPABASE_URL}/rest/v1/articles?select=slug,updated_at,created_at&status=eq.published`,
+      `${SUPABASE_URL}/rest/v1/articles?select=slug,updated_at,created_at&status=eq.published&order=created_at.desc`,
       {
         headers: {
           apikey: SUPABASE_KEY,
@@ -16,24 +16,34 @@ export default async function handler(req, res) {
 
     const articles = await response.json();
 
-    const articleUrls = articles.map((article) => `
+    const staticPages = [
+      "",
+      "berita.html",
+      "kategori.html",
+      "forum.html",
+      "redaksi.html",
+      "kontak.html"
+    ];
+
+    const staticUrls = staticPages.map(page => `
+      <url>
+        <loc>${SITE_URL}/${page}</loc>
+        <priority>${page === "" ? "1.0" : "0.8"}</priority>
+      </url>
+    `).join("");
+
+    const articleUrls = articles.map(article => `
       <url>
         <loc>${SITE_URL}/detail.html?slug=${article.slug}</loc>
         <lastmod>${article.updated_at || article.created_at}</lastmod>
-        <priority>0.8</priority>
+        <priority>0.9</priority>
       </url>
     `).join("");
 
     const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>${SITE_URL}/</loc><priority>1.0</priority></url>
-  <url><loc>${SITE_URL}/berita.html</loc><priority>0.9</priority></url>
-  <url><loc>${SITE_URL}/kategori.html</loc><priority>0.8</priority></url>
-  <url><loc>${SITE_URL}/forum.html</loc><priority>0.8</priority></url>
-  <url><loc>${SITE_URL}/tentang.html</loc><priority>0.6</priority></url>
-  <url><loc>${SITE_URL}/redaksi.html</loc><priority>0.6</priority></url>
-  <url><loc>${SITE_URL}/kontak.html</loc><priority>0.6</priority></url>
-  ${articleUrls}
+${staticUrls}
+${articleUrls}
 </urlset>`;
 
     res.setHeader("Content-Type", "application/xml");
