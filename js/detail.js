@@ -155,7 +155,10 @@ async function loadArticleDetail() {
   detailTitle.textContent = data.title;
   detailExcerpt.textContent = data.excerpt || "";
   detailAuthor.textContent = data.profiles?.name || "Redaksi Ranex";
-  detailDate.textContent = `${formatDate(data.created_at)} • 6 menit baca`;
+  const wordCount = (data.content || "").trim().split(/\s+/).length;
+const readTime = Math.max(1, Math.ceil(wordCount / 200));
+
+detailDate.textContent = `${formatDate(data.created_at)} • ${readTime} menit baca`;
 
   detailCover.src = data.cover_url || "assets/logo-ranex-media.png";
   detailCover.alt = data.title;
