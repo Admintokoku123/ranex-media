@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Portal berita, artikel, dan komunitas digital Indonesia.">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Ranex Media">
+<meta property="og:title" content="Ranex Media">
+<meta property="og:description" content="Portal berita, artikel, dan komunitas digital Indonesia.">
+<meta property="og:image" content="https://media.ranexgroup.my.id/assets/logo-ranex-media.png">
+<meta property="og:url" content="https://media.ranexgroup.my.id">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Ranex Media">
+<meta name="twitter:description" content="Portal berita, artikel, dan komunitas digital Indonesia.">
+<meta name="twitter:image" content="https://media.ranexgroup.my.id/assets/logo-ranex-media.png">
+
+<link rel="canonical" href="https://media.ranexgroup.my.id">
+
+  <title>Forum Komunitas | Ranex Media</title>
+  <meta name="description" content="Forum diskusi komunitas Ranex Media." />
+
+  <link rel="icon" type="image/png" href="assets/logo-ranex-media.png">
+  <link rel="apple-touch-icon" href="assets/logo-ranex-media.png">
+  <link rel="stylesheet" href="css/style.css" />
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="container topbar-inner">
+      <span>Ranex Media</span>
+      <span id="currentDate">Memuat tanggal...</span>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <div class="container header-inner">
+
+      <a href="index.html" class="brand">
+        <img src="assets/logo-ranex-media.png" alt="Ranex Media" class="brand-logo">
+        <div class="brand-text">
+          <h2>Ranex Media</h2>
+          <span>News • Insight • Community</span>
+        </div>
+      </a>
+
+      <nav class="nav-menu" id="navMenu">
+        <a href="index.html">Beranda</a>
+        <a href="berita.html">Berita</a>
+        <a href="kategori.html">Kategori</a>
+        <a href="forum.html" class="active">Forum</a>
+        <a href="tentang.html">Tentang</a>
+        <a href="kontak.html">Kontak</a>
+      </nav>
+
+      <div class="header-actions">
+        <button class="search-btn" id="openSearch" title="Cari">
+          <i data-lucide="search"></i>
+        </button>
+
+        <div class="theme-switcher">
+          <button data-theme-set="light"><i data-lucide="sun"></i></button>
+          <button data-theme-set="dark"><i data-lucide="moon"></i></button>
+          <button data-theme-set="auto"><i data-lucide="monitor"></i></button>
+        </div>
+
+        <a href="login.html" class="login-btn">Masuk</a>
+
+        <button class="menu-btn" id="menuBtn">
+          <i data-lucide="menu"></i>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <main>
+
+    <section class="page-hero">
+      <div class="container page-hero-inner">
+        <span class="category-label">Forum Komunitas</span>
+        <h1>Diskusi seputar bisnis, teknologi, website, marketplace, dan dunia digital.</h1>
+        <p>
+          Tempat berbagi pengalaman, bertanya, dan berdiskusi bersama komunitas Ranex Media.
+        </p>
+
+        <div class="forum-hero-actions">
+          <button class="primary-btn" id="openTopicModal">
+            <i data-lucide="plus"></i>
+            Buat Topik
+          </button>
+
+          <a href="login.html" class="outline-btn">
+            <i data-lucide="user-round"></i>
+            Masuk Akun
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container forum-page-layout">
+
+        <aside class="forum-left">
+
+          <div class="sidebar-card">
+            <h3>Kategori Forum</h3>
+
+            <button class="forum-filter active" data-filter="all">
+              <i data-lucide="layout-grid"></i>
+              Semua Topik
+            </button>
+
+            <button class="forum-filter" data-filter="Bisnis">
+              <i data-lucide="briefcase-business"></i>
+              Bisnis
+            </button>
+
+            <button class="forum-filter" data-filter="Teknologi">
+              <i data-lucide="cpu"></i>
+              Teknologi
+            </button>
+
+            <button class="forum-filter" data-filter="Website">
+              <i data-lucide="globe-2"></i>
+              Website
+            </button>
+
+            <button class="forum-filter" data-filter="Marketplace">
+              <i data-lucide="shopping-cart"></i>
+              Marketplace
+            </button>
+
+            <button class="forum-filter" data-filter="UMKM">
+              <i data-lucide="store"></i>
+              UMKM
+            </button>
+          </div>
+
+          <div class="sidebar-card">
+            <h3>Aturan Forum</h3>
+            <p class="muted-text">
+              Gunakan bahasa sopan, jangan spam, hindari hoaks, dan saling menghargai antar anggota.
+            </p>
+          </div>
+
+        </aside>
+
+        <div class="forum-center">
+
+          <div class="forum-toolbar">
+            <div class="search-box forum-search">
+              <i data-lucide="search"></i>
+              <input type="text" id="forumSearch" placeholder="Cari topik forum...">
+            </div>
+
+            <select id="forumSort">
+              <option value="newest">Terbaru</option>
+              <option value="popular">Terpopuler</option>
+            </select>
+          </div>
+
+          <div id="forumList" class="forum-topic-list">
+            <div class="loading-news">Memuat topik forum...</div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <div class="topic-modal" id="topicModal">
+    <div class="topic-modal-card">
+
+      <button class="modal-close" id="closeTopicModal">
+        <i data-lucide="x"></i>
+      </button>
+
+      <span class="category-label">Topik Baru</span>
+      <h2>Buat Diskusi Baru</h2>
+      <p>Tulis pertanyaan atau topik diskusi untuk komunitas Ranex Media.</p>
+
+      <form id="topicForm" class="topic-form">
+
+        <input type="text" id="topicTitle" placeholder="Judul topik diskusi" required>
+
+        <select id="topicCategory" required>
+          <option value="">Pilih kategori</option>
+          <option>Bisnis</option>
+          <option>Teknologi</option>
+          <option>Website</option>
+          <option>Marketplace</option>
+          <option>UMKM</option>
+          <option>AI</option>
+          <option>Edukasi</option>
+        </select>
+
+        <textarea id="topicContent" placeholder="Tulis isi diskusi..." required></textarea>
+
+        <button type="submit" class="primary-btn">
+          Publikasikan Topik
+        </button>
+
+      </form>
+
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+
+        <div class="footer-brand">
+          <img src="assets/logo-ranex-media.png" alt="Ranex Media" class="footer-logo">
+          <h3>Ranex Media</h3>
+          <p>
+            Portal berita dan komunitas digital Indonesia yang membahas teknologi,
+            bisnis, AI, website, marketplace, UMKM, dan edukasi digital.
+          </p>
+        </div>
+
+        <div class="footer-links">
+          <h4>Perusahaan</h4>
+          <a href="tentang.html">Tentang Kami</a>
+          <a href="redaksi.html">Redaksi</a>
+          <a href="kontak.html">Kontak</a>
+          <a href="karir.html">Karir</a>
+        </div>
+
+        <div class="footer-links">
+          <h4>Media</h4>
+          <a href="berita.html">Berita</a>
+          <a href="kategori.html">Kategori</a>
+          <a href="forum.html">Forum</a>
+          <a href="media-kit.html">Media Kit</a>
+        </div>
+
+        <div class="footer-links">
+          <h4>Kontributor</h4>
+          <a href="kirim-artikel.html">Kirim Artikel</a>
+          <a href="penulis.html">Penulis</a>
+          <a href="privasi.html">Privasi</a>
+          <a href="disclaimer.html">Disclaimer</a>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      © 2026 Ranex Media • Ranex Group Indonesia (Perseroan Perorangan)
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/forum.js"></script>
+
+</body>
+</html>

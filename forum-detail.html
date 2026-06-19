@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Portal berita, artikel, dan komunitas digital Indonesia.">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Ranex Media">
+<meta property="og:title" content="Ranex Media">
+<meta property="og:description" content="Portal berita, artikel, dan komunitas digital Indonesia.">
+<meta property="og:image" content="https://media.ranexgroup.my.id/assets/logo-ranex-media.png">
+<meta property="og:url" content="https://media.ranexgroup.my.id">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Ranex Media">
+<meta name="twitter:description" content="Portal berita, artikel, dan komunitas digital Indonesia.">
+<meta name="twitter:image" content="https://media.ranexgroup.my.id/assets/logo-ranex-media.png">
+
+<link rel="canonical" href="https://media.ranexgroup.my.id">
+
+  <title>Detail Forum | Ranex Media</title>
+
+  <link rel="icon" type="image/png" href="assets/logo-ranex-media.png">
+  <link rel="apple-touch-icon" href="assets/logo-ranex-media.png">
+  <link rel="stylesheet" href="css/style.css" />
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="container topbar-inner">
+      <span>Ranex Media</span>
+      <span id="currentDate">Memuat tanggal...</span>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="brand">
+        <img src="assets/logo-ranex-media.png" alt="Ranex Media" class="brand-logo">
+        <div class="brand-text">
+          <h2>Ranex Media</h2>
+          <span>News • Insight • Community</span>
+        </div>
+      </a>
+
+      <nav class="nav-menu" id="navMenu">
+        <a href="index.html">Beranda</a>
+        <a href="berita.html">Berita</a>
+        <a href="kategori.html">Kategori</a>
+        <a href="forum.html" class="active">Forum</a>
+        <a href="tentang.html">Tentang</a>
+        <a href="kontak.html">Kontak</a>
+      </nav>
+
+      <div class="header-actions">
+        <button class="search-btn" id="openSearch" title="Cari">
+          <i data-lucide="search"></i>
+        </button>
+
+        <div class="theme-switcher">
+          <button data-theme-set="light"><i data-lucide="sun"></i></button>
+          <button data-theme-set="dark"><i data-lucide="moon"></i></button>
+          <button data-theme-set="auto"><i data-lucide="monitor"></i></button>
+        </div>
+
+        <a href="login.html" class="login-btn">Masuk</a>
+
+        <button class="menu-btn" id="menuBtn">
+          <i data-lucide="menu"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <div class="container page-hero-inner">
+        <a href="forum.html" class="back-link">
+          <i data-lucide="arrow-left"></i>
+          Kembali ke Forum
+        </a>
+
+        <span class="category-label" id="topicCategoryLabel">Forum</span>
+        <h1 id="topicTitle">Memuat topik...</h1>
+        <p id="topicMeta">Mohon tunggu sebentar.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container forum-detail-layout">
+
+        <article class="forum-detail-main">
+
+          <div class="forum-detail-card">
+            <div class="forum-detail-author">
+              <div class="comment-avatar" id="topicAuthorAvatar">R</div>
+              <div>
+                <strong id="topicAuthor">Pengguna Ranex</strong>
+                <span id="topicDate">Memuat tanggal...</span>
+              </div>
+            </div>
+
+            <div id="topicContent" class="forum-detail-content">
+              <p>Memuat isi diskusi...</p>
+            </div>
+          </div>
+
+          <div class="reply-section">
+            <div class="section-title">
+              <div>
+                <span>Diskusi</span>
+                <h2>Balasan</h2>
+              </div>
+            </div>
+
+            <form id="replyForm" class="reply-form">
+              <textarea id="replyContent" placeholder="Tulis balasan kamu..." required></textarea>
+              <button type="submit" class="primary-btn">
+                <i data-lucide="send"></i>
+                Kirim Balasan
+              </button>
+            </form>
+
+            <div id="replyList" class="reply-list">
+              <div class="loading-news">Memuat balasan...</div>
+            </div>
+          </div>
+
+        </article>
+
+        <aside class="detail-sidebar">
+          <div class="sidebar-card">
+            <h3>Topik Terbaru</h3>
+            <div id="latestTopics">
+              <div class="loading-news">Memuat topik...</div>
+            </div>
+          </div>
+
+          <div class="sidebar-card">
+            <h3>Aturan Forum</h3>
+            <p class="muted-text">
+              Gunakan bahasa sopan, jangan spam, hindari hoaks, dan saling menghormati.
+            </p>
+          </div>
+        </aside>
+
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-bottom">
+      © 2026 Ranex Media • Ranex Group Indonesia (Perseroan Perorangan)
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/forum-detail.js"></script>
+
+</body>
+</html>

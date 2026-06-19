@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Portal berita, artikel, dan komunitas digital Indonesia.">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Ranex Media">
+<meta property="og:title" content="Ranex Media">
+<meta property="og:description" content="Portal berita, artikel, dan komunitas digital Indonesia.">
+<meta property="og:image" content="https://media.ranexgroup.my.id/assets/logo-ranex-media.png">
+<meta property="og:url" content="https://media.ranexgroup.my.id">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Ranex Media">
+<meta name="twitter:description" content="Portal berita, artikel, dan komunitas digital Indonesia.">
+<meta name="twitter:image" content="https://media.ranexgroup.my.id/assets/logo-ranex-media.png">
+
+<link rel="canonical" href="https://media.ranexgroup.my.id">
+
+  <title>Masuk | Ranex Media</title>
+  <meta name="description" content="Masuk ke akun Ranex Media untuk membaca, berkomentar, dan bergabung di komunitas." />
+
+  <link rel="icon" type="image/png" href="assets/logo-ranex-media.png">
+  <link rel="apple-touch-icon" href="assets/logo-ranex-media.png">
+  <link rel="stylesheet" href="css/style.css" />
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <main class="auth-page">
+
+    <section class="auth-left">
+      <a href="index.html" class="auth-brand">
+        <img src="assets/logo-ranex-media.png" alt="Ranex Media">
+        <div>
+          <h1>Ranex Media</h1>
+          <p>News • Insight • Community</p>
+        </div>
+      </a>
+
+      <div class="auth-hero">
+        <span>Portal Media Digital</span>
+        <h2>Masuk untuk ikut berdiskusi dan membangun komunitas digital.</h2>
+        <p>
+          Baca artikel, simpan berita favorit, berkomentar, dan bergabung di forum Ranex Media.
+        </p>
+      </div>
+    </section>
+
+    <section class="auth-right">
+      <div class="auth-card">
+
+        <div class="auth-top">
+          <a href="index.html" class="back-link">
+            <i data-lucide="arrow-left"></i>
+            Beranda
+          </a>
+
+          <div class="theme-switcher">
+            <button data-theme-set="light" title="Tema cerah"><i data-lucide="sun"></i></button>
+            <button data-theme-set="dark" title="Tema gelap"><i data-lucide="moon"></i></button>
+            <button data-theme-set="auto" title="Ikuti perangkat"><i data-lucide="monitor"></i></button>
+          </div>
+        </div>
+
+        <div class="auth-title">
+          <span>Selamat datang kembali</span>
+          <h2>Masuk ke akun</h2>
+          <p>Gunakan email dan password yang sudah terdaftar.</p>
+        </div>
+
+        <form id="loginForm" class="auth-form">
+
+          <label>
+            Email
+            <div class="input-group">
+              <i data-lucide="mail"></i>
+              <input type="email" id="loginEmail" placeholder="nama@email.com" required>
+            </div>
+          </label>
+
+          <label>
+            Password
+            <div class="input-group">
+              <i data-lucide="lock"></i>
+              <input type="password" id="loginPassword" placeholder="Masukkan password" required>
+              <button type="button" class="toggle-pass" data-target="loginPassword">
+                <i data-lucide="eye"></i>
+              </button>
+            </div>
+          </label>
+
+          <div class="auth-options">
+            <label class="check-row">
+              <input type="checkbox" id="rememberMe">
+              <span>Ingat saya</span>
+            </label>
+
+            <a href="#">Lupa password?</a>
+          </div>
+
+          <button type="submit" class="auth-submit">
+            Masuk Sekarang
+            <i data-lucide="arrow-right"></i>
+          </button>
+
+        </form>
+
+        <p class="auth-switch">
+          Belum punya akun?
+          <a href="register.html">Daftar gratis</a>
+        </p>
+
+      </div>
+    </section>
+
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/auth.js"></script>
+
+</body>
+</html>

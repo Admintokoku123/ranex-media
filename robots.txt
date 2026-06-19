@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://media.ranexgroup.my.id/sitemap.xml

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Portal berita, artikel, dan komunitas digital Indonesia.">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Ranex Media">
+<meta property="og:title" content="Ranex Media">
+<meta property="og:description" content="Portal berita, artikel, dan komunitas digital Indonesia.">
+<meta property="og:image" content="https://media.ranexgroup.my.id/assets/logo-ranex-media.png">
+<meta property="og:url" content="https://media.ranexgroup.my.id">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Ranex Media">
+<meta name="twitter:description" content="Portal berita, artikel, dan komunitas digital Indonesia.">
+<meta name="twitter:image" content="https://media.ranexgroup.my.id/assets/logo-ranex-media.png">
+
+<link rel="canonical" href="https://media.ranexgroup.my.id">
+
+  <title>Profil Saya | Ranex Media</title>
+
+  <link rel="icon" type="image/png" href="assets/logo-ranex-media.png">
+  <link rel="apple-touch-icon" href="assets/logo-ranex-media.png">
+  <link rel="stylesheet" href="css/style.css" />
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="container topbar-inner">
+      <span>Ranex Media</span>
+      <span id="currentDate">Memuat tanggal...</span>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <div class="container header-inner">
+
+      <a href="index.html" class="brand">
+        <img src="assets/logo-ranex-media.png" alt="Ranex Media" class="brand-logo">
+        <div class="brand-text">
+          <h2>Ranex Media</h2>
+          <span>News • Insight • Community</span>
+        </div>
+      </a>
+
+      <nav class="nav-menu" id="navMenu">
+        <a href="index.html">Beranda</a>
+        <a href="berita.html">Berita</a>
+        <a href="kategori.html">Kategori</a>
+        <a href="forum.html">Forum</a>
+        <a href="redaksi.html">Redaksi</a>
+        <a href="kontak.html">Kontak</a>
+      </nav>
+
+      <div class="header-actions">
+        <button class="search-btn" id="openSearch" title="Cari">
+          <i data-lucide="search"></i>
+        </button>
+
+        <div class="theme-switcher">
+          <button data-theme-set="light"><i data-lucide="sun"></i></button>
+          <button data-theme-set="dark"><i data-lucide="moon"></i></button>
+          <button data-theme-set="auto"><i data-lucide="monitor"></i></button>
+        </div>
+
+        <a href="login.html" class="login-btn">Masuk</a>
+
+        <button class="menu-btn" id="menuBtn">
+          <i data-lucide="menu"></i>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <main class="profile-page">
+
+    <section class="profile-hero">
+      <div class="container profile-hero-grid">
+
+        <div class="profile-card">
+          <div class="profile-cover"></div>
+
+          <div class="profile-main">
+
+            <label class="profile-avatar upload-avatar">
+              <input type="file" id="avatarInput" accept="image/*" hidden>
+              <img id="profileAvatarImg" src="assets/logo-ranex-media.png" alt="User Ranex">
+              <span>Ganti Foto</span>
+            </label>
+
+            <div>
+              <h1>Pengguna Ranex</h1>
+              <p>member@ranexmedia.id</p>
+              <span class="role-badge">Member</span>
+            </div>
+
+          </div>
+
+          <div class="profile-actions">
+            <button class="primary-btn" id="editProfileBtn" type="button">
+              <i data-lucide="edit-3"></i>
+              Edit Profil
+            </button>
+
+            <button class="outline-btn" id="logoutBtn">
+              <i data-lucide="log-out"></i>
+              Keluar
+            </button>
+          </div>
+        </div>
+
+        <div class="profile-summary">
+          <div>
+            <i data-lucide="bookmark"></i>
+            <strong id="savedCount">0</strong>
+            <span>Artikel Disimpan</span>
+          </div>
+
+          <div>
+            <i data-lucide="message-circle"></i>
+            <strong id="commentCount">0</strong>
+            <span>Komentar</span>
+          </div>
+
+          <div>
+            <i data-lucide="messages-square"></i>
+            <strong id="topicCount">0</strong>
+            <span>Topik Forum</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container profile-layout">
+
+        <aside class="profile-menu">
+          <button class="active" data-tab="saved">
+            <i data-lucide="bookmark"></i>
+            Artikel Tersimpan
+          </button>
+
+          <button data-tab="comments">
+            <i data-lucide="message-circle"></i>
+            Komentar Saya
+          </button>
+
+          <button data-tab="forum">
+            <i data-lucide="messages-square"></i>
+            Forum Saya
+          </button>
+
+          <button data-tab="settings">
+            <i data-lucide="settings"></i>
+            Pengaturan Akun
+          </button>
+        </aside>
+
+        <div class="profile-content">
+
+          <div class="profile-tab active" id="saved">
+            <div class="section-title">
+              <div>
+                <span>Bookmark</span>
+                <h2>Artikel Tersimpan</h2>
+              </div>
+            </div>
+
+            <div id="savedArticlesList">
+              <div class="loading-news">Memuat artikel tersimpan...</div>
+            </div>
+          </div>
+
+          <div class="profile-tab" id="comments">
+            <div class="section-title">
+              <div>
+                <span>Aktivitas</span>
+                <h2>Komentar Saya</h2>
+              </div>
+            </div>
+
+            <div id="myCommentsList">
+              <div class="loading-news">Memuat komentar...</div>
+            </div>
+          </div>
+
+          <div class="profile-tab" id="forum">
+            <div class="section-title">
+              <div>
+                <span>Komunitas</span>
+                <h2>Topik Forum Saya</h2>
+              </div>
+            </div>
+
+            <div id="myForumList">
+              <div class="loading-news">Memuat topik forum...</div>
+            </div>
+          </div>
+
+          <div class="profile-tab" id="settings">
+            <div class="section-title">
+              <div>
+                <span>Akun</span>
+                <h2>Pengaturan Akun</h2>
+              </div>
+            </div>
+
+            <form class="settings-form">
+              <label>
+                Nama
+                <input type="text" value="Pengguna Ranex">
+              </label>
+
+              <label>
+                Email
+                <input type="email" value="member@ranexmedia.id" readonly>
+              </label>
+
+              <label>
+                Bio
+                <textarea>Member komunitas Ranex Media.</textarea>
+              </label>
+
+              <button type="submit" class="primary-btn">
+                Simpan Perubahan
+              </button>
+            </form>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/profil.js"></script>
+
+</body>
+</html>

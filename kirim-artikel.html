@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Kirim Artikel | Ranex Media</title>
+
+<link rel="icon" href="assets/logo-ranex-media.png">
+<link rel="apple-touch-icon" href="assets/logo-ranex-media.png">
+<link rel="stylesheet" href="css/style.css">
+
+<script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="index.html" class="brand">
+      <img src="assets/logo-ranex-media.png" alt="Ranex Media" class="brand-logo">
+      <div class="brand-text">
+        <h2>Ranex Media</h2>
+        <span>News • Insight • Community</span>
+      </div>
+    </a>
+  </div>
+</header>
+
+<main>
+
+<section class="legal-hero">
+  <div class="container legal-hero-content">
+    <span class="category-label">Kontributor</span>
+    <h1>Kirim Artikel ke Ranex Media</h1>
+    <p>
+      Punya tulisan seputar teknologi, bisnis, UMKM, marketplace,
+      edukasi digital, atau komunitas? Kirimkan artikelmu untuk ditinjau redaksi.
+    </p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container submit-layout">
+
+    <div class="legal-card">
+      <h2>Form Kirim Artikel</h2>
+
+      <form class="submit-article-form" id="submitArticleForm">
+
+        <label>
+          Nama Penulis
+          <input type="text" id="writerName" placeholder="Nama lengkap" required>
+        </label>
+
+        <label>
+          Email
+          <input type="email" id="writerEmail" placeholder="email@contoh.com" required>
+        </label>
+
+        <label>
+          Judul Artikel
+          <input type="text" id="submitTitle" placeholder="Judul artikel" required>
+        </label>
+
+        <label>
+          Kategori
+          <select id="submitCategory" required>
+            <option value="">Pilih kategori</option>
+            <option>Teknologi</option>
+            <option>Bisnis</option>
+            <option>UMKM</option>
+            <option>Marketplace</option>
+            <option>AI</option>
+            <option>Website</option>
+            <option>Aplikasi</option>
+            <option>Digital Marketing</option>
+            <option>Edukasi</option>
+            <option>Opini</option>
+            <option>Karir</option>
+            <option>Keuangan</option>
+            <option>Konten Creator</option>
+            <option>Artis</option>
+            <option>Musik</option>
+            <option>Hiburan</option>
+            <option>Politik</option>
+            <option>Internasional</option>
+            <option>Lainnya</option>
+            
+          </select>
+        </label>
+
+        <label>
+          Ringkasan Artikel
+          <textarea id="submitExcerpt" placeholder="Ringkasan singkat artikel..." required></textarea>
+        </label>
+
+        <label>
+          Isi Artikel
+          <textarea id="submitContent" class="article-textarea" placeholder="Tulis isi artikel lengkap..." required></textarea>
+        </label>
+
+        <label>
+  Cover Artikel
+
+  <input
+    type="file"
+    id="submissionCover"
+    accept=".jpg,.jpeg,.png,.webp,image/*"
+    required
+  >
+
+  <small class="input-helper">
+    Upload gambar cover artikel (JPG, PNG, WEBP)
+  </small>
+
+  <div id="submissionCoverPreview"></div>
+
+</label>
+
+        <label class="check-row terms-row">
+          <input type="checkbox" id="submitAgree" required>
+          <span>
+            Saya menyatakan artikel ini karya sendiri dan bersedia ditinjau oleh redaksi Ranex Media.
+          </span>
+        </label>
+
+        <button type="submit" class="primary-btn">
+          <i data-lucide="send"></i>
+          Kirim ke Redaksi
+        </button>
+
+      </form>
+    </div>
+
+    <aside class="submit-sidebar">
+
+      <div class="sidebar-card">
+        <h3>Ketentuan Artikel</h3>
+        <ul class="legal-list">
+          <li>Artikel harus asli dan bukan hasil salin-tempel.</li>
+          <li>Tidak mengandung ujaran kebencian, SARA, fitnah, atau hoaks.</li>
+          <li>Topik harus relevan dengan fokus Ranex Media.</li>
+          <li>Redaksi berhak mengedit, menolak, atau menunda publikasi.</li>
+          <li>Artikel yang diterima akan ditampilkan setelah proses moderasi.</li>
+        </ul>
+      </div>
+
+      <div class="sidebar-card subscribe-card">
+        <h3>Kontak Redaksi</h3>
+        <p>
+          Untuk pertanyaan kontribusi artikel, hubungi:
+        </p>
+
+        <div class="contact-info-item">
+          <i data-lucide="mail"></i>
+          <div>
+            <strong>Email</strong>
+            <span>ranex.support@gmail.com</span>
+          </div>
+        </div>
+
+        <div class="contact-info-item">
+          <i data-lucide="phone"></i>
+          <div>
+            <strong>WhatsApp</strong>
+            <span>085179972565</span>
+          </div>
+        </div>
+      </div>
+
+    </aside>
+
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+
+  <div class="container">
+
+    <div class="footer-grid">
+
+      <div class="footer-brand">
+
+        <img
+          src="assets/logo-ranex-media.png"
+          alt="Ranex Media"
+          class="footer-logo"
+        >
+
+        <h3>Ranex Media</h3>
+
+        <p>
+          Portal berita dan komunitas digital Indonesia yang membahas
+          teknologi, bisnis, AI, website, marketplace, UMKM, dan edukasi digital.
+        </p>
+
+      </div>
+
+      <div class="footer-links">
+
+        <h4>Perusahaan</h4>
+
+        <a href="tentang.html">Tentang Kami</a>
+        <a href="redaksi.html">Redaksi</a>
+        <a href="kontak.html">Kontak</a>
+        <a href="karir.html">Karir</a>
+
+      </div>
+
+      <div class="footer-links">
+
+        <h4>Media</h4>
+
+        <a href="berita.html">Berita</a>
+        <a href="kategori.html">Kategori</a>
+        <a href="forum.html">Forum</a>
+        <a href="media-kit.html">Media Kit</a>
+
+      </div>
+
+      <div class="footer-links">
+
+        <h4>Kontributor</h4>
+
+        <a href="kirim-artikel.html">Kirim Artikel</a>
+        <a href="penulis.html">Penulis</a>
+        <a href="privasi.html">Privasi</a>
+        <a href="disclaimer.html">Disclaimer</a>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    © 2026 Ranex Media • Ranex Group Indonesia (Perseroan Perorangan)
+  </div>
+
+</footer>
+
+<script src="js/main.js"></script>
+
+<script>
+lucide.createIcons();
+
+document.getElementById("submitArticleForm")?.addEventListener("submit", function(e){
+  e.preventDefault();
+
+  if(typeof showToast === "function"){
+    showToast("Artikel berhasil dikirim untuk ditinjau redaksi");
+  } else {
+    alert("Artikel berhasil dikirim untuk ditinjau redaksi");
+  }
+
+  this.reset();
+});
+</script>
+<script>
+
+const submissionCover =
+document.getElementById("submissionCover");
+
+const submissionCoverPreview =
+document.getElementById("submissionCoverPreview");
+
+submissionCover?.addEventListener("change",(e)=>{
+
+  const file = e.target.files[0];
+
+  if(!file) return;
+
+  const reader = new FileReader();
+
+  reader.onload = () => {
+
+    submissionCoverPreview.innerHTML = `
+      <img src="${reader.result}" alt="Preview Cover">
+    `;
+
+  };
+
+  reader.readAsDataURL(file);
+
+});
+
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase.js"></script>
+<script src="js/main.js"></script>
+<script src="js/kirim-artikel.js"></script>
+</body>
+</html>

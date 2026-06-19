@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Portal berita, artikel, dan komunitas digital Indonesia.">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Ranex Media">
+<meta property="og:title" content="Ranex Media">
+<meta property="og:description" content="Portal berita, artikel, dan komunitas digital Indonesia.">
+<meta property="og:image" content="https://media.ranexgroup.my.id/assets/logo-ranex-media.png">
+<meta property="og:url" content="https://media.ranexgroup.my.id">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Ranex Media">
+<meta name="twitter:description" content="Portal berita, artikel, dan komunitas digital Indonesia.">
+<meta name="twitter:image" content="https://media.ranexgroup.my.id/assets/logo-ranex-media.png">
+
+<link rel="canonical" href="https://media.ranexgroup.my.id">
+
+  <title>Admin Panel | Ranex Media</title>
+
+  <link rel="icon" type="image/png" href="assets/logo-ranex-media.png">
+  <link rel="apple-touch-icon" href="assets/logo-ranex-media.png">
+  <link rel="stylesheet" href="css/style.css" />
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <main class="admin-page">
+
+    <aside class="admin-sidebar">
+      <a href="index.html" class="admin-brand">
+        <img src="assets/logo-ranex-media.png" alt="Ranex Media">
+        <div>
+          <h2>Ranex Media</h2>
+          <span>Admin Panel</span>
+        </div>
+      </a>
+
+      <nav class="admin-menu">
+        <button class="active" data-admin-tab="dashboard">
+          <i data-lucide="layout-dashboard"></i>
+          Dashboard
+        </button>
+
+        <button data-admin-tab="articles">
+          <i data-lucide="newspaper"></i>
+          Artikel
+        </button>
+
+        <button data-admin-tab="submissions">
+  <i data-lucide="inbox"></i>
+  Kiriman Artikel
+</button>
+
+        <button data-admin-tab="comments">
+          <i data-lucide="message-circle"></i>
+          Komentar
+        </button>
+
+        <button data-admin-tab="forum">
+          <i data-lucide="messages-square"></i>
+          Forum
+        </button>
+
+        <button data-admin-tab="users">
+          <i data-lucide="users-round"></i>
+          Pengguna
+        </button>
+
+        <button data-admin-tab="settings">
+          <i data-lucide="settings"></i>
+          Pengaturan
+        </button>
+      </nav>
+
+      <button class="admin-back" id="adminLogoutBtn" type="button">
+  <i data-lucide="log-out"></i>
+  Logout
+</button>
+      <a href="index.html" class="admin-back">
+        <i data-lucide="arrow-left"></i>
+        Kembali ke Website
+      </a>
+    </aside>
+
+    <section class="admin-content">
+
+      <header class="admin-header">
+        <div>
+          <span>Selamat datang, <b id="adminName">Admin</b> • <b id="adminRole">member</b></span>
+          <h1>Dashboard Admin</h1>
+        </div>
+
+        <div class="admin-actions">
+          <div class="theme-switcher">
+            <button data-theme-set="light"><i data-lucide="sun"></i></button>
+            <button data-theme-set="dark"><i data-lucide="moon"></i></button>
+            <button data-theme-set="auto"><i data-lucide="monitor"></i></button>
+          </div>
+
+          <button class="primary-btn" id="quickAddArticle">
+            <i data-lucide="plus"></i>
+            Tambah Artikel
+          </button>
+        </div>
+      </header>
+
+      <div class="admin-tab active" id="dashboard">
+        <div class="admin-stats">
+          <div>
+            <i data-lucide="newspaper"></i>
+            <strong id="totalArticles">0</strong>
+            <span>Total Artikel</span>
+          </div>
+
+          <div>
+            <i data-lucide="users-round"></i>
+            <strong id="totalUsers">0</strong>
+            <span>Total Pengguna</span>
+          </div>
+
+          <div>
+            <i data-lucide="message-circle-warning"></i>
+            <strong id="totalComments">0</strong>
+            <span>Komentar Pending</span>
+          </div>
+
+          <div>
+            <i data-lucide="messages-square"></i>
+            <strong id="totalTopics">0</strong>
+            <span>Topik Forum</span>
+          </div>
+        </div>
+
+        <div class="admin-grid">
+          <div class="admin-card">
+            <h3>Artikel Terbaru</h3>
+            <div id="latestArticles">
+              <div class="admin-list-item">
+                <div>
+                  <strong>Belum ada data artikel</strong>
+                  <span>Artikel dari Supabase akan muncul di sini</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="admin-card">
+            <h3>Aktivitas Terbaru</h3>
+
+            <div class="activity-item">
+              <i data-lucide="newspaper"></i>
+              <p>Dashboard admin sudah terhubung ke Supabase.</p>
+            </div>
+
+            <div class="activity-item">
+              <i data-lucide="shield-check"></i>
+              <p>Artikel bisa dibuat dan dipublikasikan dari panel admin.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="admin-tab" id="articles">
+        <div class="admin-card">
+          <h3>Tambah Artikel</h3>
+
+          <form class="admin-form" id="articleForm">
+
+            <input
+              type="text"
+              id="articleTitle"
+              placeholder="Judul artikel"
+              required
+            >
+
+            <textarea
+              id="articleExcerpt"
+              placeholder="Ringkasan singkat artikel"
+              required
+            ></textarea>
+
+            <select id="articleCategory">
+              <option value="">Pilih kategori</option>
+            </select>
+
+   <label>
+  Cover Artikel
+
+  <input
+    type="file"
+    id="articleCover"
+    accept=".jpg,.jpeg,.png,.webp,image/*"
+  >
+
+  <small class="input-helper">
+    Upload gambar cover artikel (JPG, PNG, WEBP)
+  </small>
+
+  <div id="coverPreviewArea"></div>
+</label>
+            <textarea
+              id="articleContent"
+              placeholder="Isi artikel lengkap..."
+              required
+            ></textarea>
+
+            <button type="submit" class="primary-btn">
+              Publikasikan
+            </button>
+
+          </form>
+        </div>
+
+        <div class="admin-card">
+          <h3>Daftar Artikel</h3>
+          <div id="adminArticleList">
+            <div class="admin-list-item">
+              <div>
+                <strong>Memuat artikel...</strong>
+                <span>Mohon tunggu</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="admin-tab" id="submissions">
+  <div class="admin-card">
+    <h3>Kiriman Artikel Kontributor</h3>
+
+    <div id="submissionList">
+      <div class="admin-list-item">
+        <div>
+          <strong>Memuat kiriman artikel...</strong>
+          <span>Mohon tunggu</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <div class="admin-tab" id="comments">
+  <div class="admin-card">
+    <h3>Moderasi Komentar</h3>
+
+    <div id="adminCommentList">
+      <div class="admin-list-item">
+        <div>
+          <strong>Memuat komentar...</strong>
+          <span>Mohon tunggu</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="admin-tab" id="forum">
+  <div class="admin-card">
+    <h3>Moderasi Forum</h3>
+
+    <div id="adminForumList">
+      <div class="admin-list-item">
+        <div>
+          <strong>Memuat topik forum...</strong>
+          <span>Mohon tunggu</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+      <div class="admin-tab" id="users">
+        <div class="admin-card">
+          <h3>Daftar Pengguna</h3>
+          <div id="adminUserList">
+            <div class="admin-user-row">
+              <div class="comment-avatar">R</div>
+              <div>
+                <strong>Memuat pengguna...</strong>
+                <span>Mohon tunggu</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="admin-tab" id="settings">
+        <div class="admin-card">
+          <h3>Pengaturan Media</h3>
+
+          <form class="admin-form">
+            <input type="text" value="Ranex Media">
+            <input type="email" value="ranex.support@gmail.com">
+            <input type="text" value="News • Insight • Community">
+            <textarea>Portal berita, artikel, dan komunitas digital di bawah Ranex Group Indonesia (Perseroan Perorangan).</textarea>
+
+            <button type="button" class="primary-btn">
+              Simpan Pengaturan
+            </button>
+          </form>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/admin.js"></script>
+
+</body>
+</html>

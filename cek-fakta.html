@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Cek Fakta | Ranex Media</title>
+
+<link rel="icon" href="assets/logo-ranex-media.png">
+<link rel="apple-touch-icon" href="assets/logo-ranex-media.png">
+<link rel="stylesheet" href="css/style.css">
+
+<script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="index.html" class="brand">
+      <img src="assets/logo-ranex-media.png" alt="Ranex Media" class="brand-logo">
+      <div class="brand-text">
+        <h2>Ranex Media</h2>
+        <span>News • Insight • Community</span>
+      </div>
+    </a>
+  </div>
+</header>
+
+<main>
+
+<section class="legal-hero">
+  <div class="container legal-hero-content">
+    <span class="category-label">Cek Fakta</span>
+    <h1>Laporkan informasi yang perlu diperiksa.</h1>
+    <p>
+      Ranex Media menyediakan halaman cek fakta untuk menerima laporan informasi,
+      klaim, atau konten yang perlu ditinjau lebih lanjut.
+    </p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container submit-layout">
+
+    <div class="legal-card">
+      <h2>Form Laporan Cek Fakta</h2>
+
+      <form class="submit-article-form" id="factCheckForm">
+
+        <label>
+          Nama Pelapor
+          <input type="text" id="reporterName" placeholder="Nama lengkap" required>
+        </label>
+
+        <label>
+          Email
+          <input type="email" id="reporterEmail" placeholder="email@contoh.com" required>
+        </label>
+
+        <label>
+          Judul / Klaim yang Dilaporkan
+          <input type="text" id="claimTitle" placeholder="Contoh: Klaim tentang teknologi AI..." required>
+        </label>
+
+        <label>
+          Link Sumber
+          <input type="url" id="claimUrl" placeholder="https://contoh.com/sumber">
+        </label>
+
+        <label>
+          Penjelasan Laporan
+          <textarea id="claimDescription" class="article-textarea" placeholder="Jelaskan informasi yang ingin diperiksa..." required></textarea>
+        </label>
+
+        <button type="submit" class="primary-btn">
+          <i data-lucide="shield-check"></i>
+          Kirim Laporan
+        </button>
+
+      </form>
+    </div>
+
+    <aside class="submit-sidebar">
+
+      <div class="sidebar-card">
+        <h3>Catatan</h3>
+        <ul class="legal-list">
+          <li>Laporan akan ditinjau oleh tim Ranex Media.</li>
+          <li>Sertakan sumber atau link agar lebih mudah diverifikasi.</li>
+          <li>Ranex Media tidak menjamin semua laporan akan diterbitkan.</li>
+          <li>Hindari laporan palsu, fitnah, atau informasi yang tidak jelas.</li>
+        </ul>
+      </div>
+
+      <div class="sidebar-card">
+        <h3>Status Cek Fakta</h3>
+
+        <div class="fact-status-item">
+          <span class="status-dot review"></span>
+          <div>
+            <strong>Dalam Peninjauan</strong>
+            <p>Informasi sedang diperiksa.</p>
+          </div>
+        </div>
+
+        <div class="fact-status-item">
+          <span class="status-dot true"></span>
+          <div>
+            <strong>Benar</strong>
+            <p>Klaim sesuai data yang tersedia.</p>
+          </div>
+        </div>
+
+        <div class="fact-status-item">
+          <span class="status-dot false"></span>
+          <div>
+            <strong>Tidak Benar</strong>
+            <p>Klaim tidak sesuai data.</p>
+          </div>
+        </div>
+
+      </div>
+
+    </aside>
+
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-bottom">
+    © 2026 Ranex Media • Ranex Group Indonesia (Perseroan Perorangan)
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+
+<script>
+lucide.createIcons();
+
+document.getElementById("factCheckForm")?.addEventListener("submit", function(e){
+  e.preventDefault();
+
+  if(typeof showToast === "function"){
+    showToast("Laporan cek fakta berhasil dikirim");
+  } else {
+    alert("Laporan cek fakta berhasil dikirim");
+  }
+
+  this.reset();
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Kontak | Ranex Media</title>
+
+  <link rel="icon" href="assets/logo-ranex-media.png">
+  <link rel="apple-touch-icon" href="assets/logo-ranex-media.png">
+  <link rel="stylesheet" href="css/style.css">
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="container topbar-inner">
+      <span>Ranex Media</span>
+      <span id="currentDate">Memuat tanggal...</span>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <div class="container header-inner">
+
+      <a href="index.html" class="brand">
+        <img src="assets/logo-ranex-media.png" alt="Ranex Media" class="brand-logo">
+        <div class="brand-text">
+          <h2>Ranex Media</h2>
+          <span>News • Insight • Community</span>
+        </div>
+      </a>
+
+      <nav class="nav-menu" id="navMenu">
+        <a href="index.html">Beranda</a>
+        <a href="berita.html">Berita</a>
+        <a href="forum.html">Forum</a>
+        <a href="tentang.html">Tentang</a>
+        <a href="kontak.html" class="active">Kontak</a>
+      </nav>
+
+    </div>
+  </header>
+
+  <main>
+
+    <section class="legal-hero">
+      <div class="container legal-hero-content">
+        <span class="category-label">Hubungi Kami</span>
+        <h1>Kontak Resmi Ranex Media</h1>
+        <p>
+          Untuk pertanyaan, kerja sama, publikasi, koreksi berita,
+          maupun kebutuhan bisnis lainnya silakan hubungi kami.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+
+        <div class="contact-page-grid">
+
+          <div class="legal-card">
+
+            <h2>Informasi Kontak</h2>
+
+            <div class="contact-info-list">
+
+              <div class="contact-info-item">
+                <i data-lucide="phone"></i>
+                <div>
+                  <strong>WhatsApp</strong>
+                  <span>085179972565</span>
+                </div>
+              </div>
+
+              <div class="contact-info-item">
+                <i data-lucide="mail"></i>
+                <div>
+                  <strong>Email</strong>
+                  <span>ranex.support@gmail.com</span>
+                </div>
+              </div>
+
+              <div class="contact-info-item">
+                <i data-lucide="building-2"></i>
+                <div>
+                  <strong>Perusahaan</strong>
+                  <span>Perseroan Perorangan Ranex Group Indonesia</span>
+                </div>
+              </div>
+
+              <div class="contact-info-item">
+                <i data-lucide="globe"></i>
+                <div>
+                  <strong>Website</strong>
+                  <span>media.ranexgroup.my.id</span>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="legal-card">
+
+            <h2>Kirim Pesan</h2>
+
+            <form class="contact-form" id="contactForm">
+
+              <input type="text" placeholder="Nama Lengkap" required>
+
+              <input type="email" placeholder="Alamat Email" required>
+
+              <input type="text" placeholder="Subjek Pesan" required>
+
+              <textarea placeholder="Tulis pesan Anda..." required></textarea>
+
+              <button type="submit" class="primary-btn">
+                Kirim Pesan
+              </button>
+
+            </form>
+
+          </div>
+
+        </div>
+
+        <div class="legal-card">
+
+          <h2>Kerja Sama & Media Partner</h2>
+
+          <p>
+            Ranex Media terbuka untuk kerja sama media, publikasi bisnis,
+            sponsorship, kolaborasi komunitas, promosi produk, dan berbagai
+            bentuk kemitraan yang relevan dengan visi perusahaan.
+          </p>
+
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="footer-bottom">
+      © 2026 Ranex Media • Perseroan Perorangan Ranex Group Indonesia
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+
+  <script>
+    lucide.createIcons();
+
+    document.getElementById("contactForm")?.addEventListener("submit",(e)=>{
+      e.preventDefault();
+
+      if(typeof showToast === "function"){
+        showToast("Pesan berhasil dikirim");
+      }else{
+        alert("Pesan berhasil dikirim");
+      }
+
+      e.target.reset();
+    });
+  </script>
+
+</body>
+</html>

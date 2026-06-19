@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Detail Artikel | Ranex Media</title>
+
+  <meta name="description" content="Baca artikel lengkap dari Ranex Media.">
+
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Ranex Media">
+  <meta property="og:title" content="Detail Artikel | Ranex Media">
+  <meta property="og:description" content="Baca artikel lengkap dari Ranex Media.">
+  <meta property="og:image" content="https://media.ranexgroup.my.id/assets/logo-ranex-media.png">
+  <meta property="og:url" content="https://media.ranexgroup.my.id/detail.html">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Detail Artikel | Ranex Media">
+  <meta name="twitter:description" content="Baca artikel lengkap dari Ranex Media.">
+  <meta name="twitter:image" content="https://media.ranexgroup.my.id/assets/logo-ranex-media.png">
+
+  <link rel="canonical" href="https://media.ranexgroup.my.id/detail.html">
+
+  <link rel="icon" type="image/png" href="assets/logo-ranex-media.png">
+  <link rel="apple-touch-icon" href="assets/logo-ranex-media.png">
+  <link rel="stylesheet" href="css/style.css" />
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <div class="reading-progress">
+    <div class="reading-progress-bar" id="readingProgressBar"></div>
+  </div>
+
+  <div class="topbar">
+    <div class="container topbar-inner">
+      <span>Ranex Media</span>
+      <span id="currentDate">Memuat tanggal...</span>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <div class="container header-inner">
+
+      <a href="index.html" class="brand">
+        <img src="assets/logo-ranex-media.png" alt="Ranex Media" class="brand-logo">
+        <div class="brand-text">
+          <h2>Ranex Media</h2>
+          <span>News • Insight • Community</span>
+        </div>
+      </a>
+
+      <nav class="nav-menu" id="navMenu">
+        <a href="index.html">Beranda</a>
+        <a href="berita.html">Berita</a>
+        <a href="kategori.html">Kategori</a>
+        <a href="forum.html">Forum</a>
+        <a href="redaksi.html">Redaksi</a>
+        <a href="kontak.html">Kontak</a>
+      </nav>
+
+      <div class="header-actions">
+        <button class="search-btn" id="openSearch" title="Cari">
+          <i data-lucide="search"></i>
+        </button>
+
+        <div class="theme-switcher">
+          <button data-theme-set="light"><i data-lucide="sun"></i></button>
+          <button data-theme-set="dark"><i data-lucide="moon"></i></button>
+          <button data-theme-set="auto"><i data-lucide="monitor"></i></button>
+        </div>
+
+        <a href="login.html" class="login-btn">Masuk</a>
+
+        <button class="menu-btn" id="menuBtn">
+          <i data-lucide="menu"></i>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <main>
+
+    <section class="detail-hero">
+      <div class="container detail-hero-inner">
+
+        <a href="berita.html" class="back-link">
+          <i data-lucide="arrow-left"></i>
+          Kembali ke Berita
+        </a>
+
+        <span class="category-label" id="detailCategory">Artikel</span>
+
+        <h1 id="detailTitle">Memuat artikel...</h1>
+
+        <p class="article-subtitle" id="detailExcerpt">
+          Mohon tunggu sebentar.
+        </p>
+
+        <div class="article-author">
+          <div class="author-avatar">
+            <img src="assets/logo-ranex-media.png" alt="Redaksi Ranex">
+          </div>
+
+          <div>
+            <strong id="detailAuthor">Redaksi Ranex</strong>
+            <span id="detailDate">Memuat tanggal...</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="detail-section">
+      <div class="container detail-layout">
+
+        <article class="article-content">
+
+          <div id="detailCoverBox" class="detail-cover-box">
+            <img id="detailCover" src="assets/logo-ranex-media.png" alt="Cover Artikel">
+          </div>
+
+          <div class="share-bar premium-share">
+
+            <button id="copyLinkBtn">
+              <i data-lucide="link"></i>
+              Salin Link
+            </button>
+
+            <button id="bookmarkBtn">
+              <i data-lucide="bookmark"></i>
+              <span>Simpan</span>
+            </button>
+
+            <button id="shareWhatsApp">
+              <i data-lucide="message-circle"></i>
+              WhatsApp
+            </button>
+
+            <button id="shareFacebook">
+              <i data-lucide="facebook"></i>
+              Facebook
+            </button>
+
+            <button id="shareNative">
+              <i data-lucide="share-2"></i>
+              Bagikan
+            </button>
+
+          </div>
+
+          <div id="detailContent" class="article-text-content">
+            <p>Memuat isi artikel...</p>
+          </div>
+
+          <div class="article-tags" id="detailTags">
+            <span>Ranex Media</span>
+          </div>
+
+          <section class="related-articles">
+            <div class="section-title">
+              <div>
+                <span>Rekomendasi</span>
+                <h2>Artikel Terkait</h2>
+              </div>
+            </div>
+
+            <div class="related-grid" id="relatedArticles">
+              <div class="loading-news">Memuat artikel terkait...</div>
+            </div>
+          </section>
+
+          <section class="author-box">
+
+            <div class="author-avatar">
+              <img src="assets/logo-ranex-media.png" alt="Ricky Andriansyah">
+            </div>
+
+            <div class="author-content">
+              <span class="author-label">Penulis</span>
+
+              <h3>Ricky Andriansyah</h3>
+
+              <p>
+                Founder Ranex Group Indonesia dan pengelola Ranex Media.
+                Fokus pada teknologi, website, bisnis digital, UMKM,
+                marketplace, dan transformasi digital.
+              </p>
+
+              <div class="author-actions">
+                <a href="penulis.html" class="primary-btn">Lihat Profil</a>
+                <a href="kontak.html" class="outline-btn">Hubungi</a>
+              </div>
+            </div>
+
+          </section>
+
+          <section class="comment-section">
+            <div class="section-title">
+              <div>
+                <span>Diskusi</span>
+                <h2>Komentar Pembaca</h2>
+              </div>
+            </div>
+
+            <div class="comment-box">
+              <textarea id="commentInput" placeholder="Tulis komentar kamu..."></textarea>
+              <button id="sendCommentBtn" class="primary-btn">Kirim Komentar</button>
+            </div>
+
+            <div class="comment-list" id="commentList">
+              <div class="empty-state">Komentar akan tersedia setelah fitur komentar Supabase diaktifkan.</div>
+            </div>
+          </section>
+
+        </article>
+
+        <aside class="detail-sidebar">
+
+          <div class="sidebar-card">
+            <h3>Artikel Terbaru</h3>
+            <div id="latestSidebarArticles">
+              <div class="loading-news">Memuat artikel...</div>
+            </div>
+          </div>
+
+          <div class="sidebar-card subscribe-card">
+            <h3>Gabung Ranex Media</h3>
+            <p>Buat akun untuk ikut berdiskusi, menyimpan artikel, dan bergabung di forum komunitas.</p>
+            <a href="register.html" class="primary-btn">Daftar Gratis</a>
+          </div>
+
+        </aside>
+
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+
+    <div class="container">
+      <div class="footer-grid">
+
+        <div class="footer-brand">
+          <img src="assets/logo-ranex-media.png" alt="Ranex Media" class="footer-logo">
+
+          <h3>Ranex Media</h3>
+
+          <p>
+            Portal berita dan komunitas digital Indonesia yang membahas
+            teknologi, bisnis, AI, website, marketplace, UMKM, dan edukasi digital.
+          </p>
+        </div>
+
+        <div class="footer-links">
+          <h4>Perusahaan</h4>
+          <a href="tentang.html">Tentang Kami</a>
+          <a href="redaksi.html">Redaksi</a>
+          <a href="kontak.html">Kontak</a>
+          <a href="karir.html">Karir</a>
+        </div>
+
+        <div class="footer-links">
+          <h4>Media</h4>
+          <a href="berita.html">Berita</a>
+          <a href="kategori.html">Kategori</a>
+          <a href="forum.html">Forum</a>
+          <a href="media-kit.html">Media Kit</a>
+        </div>
+
+        <div class="footer-links">
+          <h4>Kontributor</h4>
+          <a href="kirim-artikel.html">Kirim Artikel</a>
+          <a href="penulis.html">Penulis</a>
+          <a href="privasi.html">Privasi</a>
+          <a href="disclaimer.html">Disclaimer</a>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      © 2026 Ranex Media • Ranex Group Indonesia (Perseroan Perorangan)
+    </div>
+
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase.js"></script>
+<script src="js/main.js"></script>
+<script src="js/detail.js"></script>
+
+</body>
+</html>
