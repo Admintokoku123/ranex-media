@@ -4867,3 +4867,60 @@ html[data-theme="dark"] .site-header {
   color:var(--muted);
   line-height:1.7;
 }
+/* TOPIK PILIHAN PREMIUM */
+
+.home-category-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:20px;
+}
+
+.home-category-card{
+  position:relative;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:24px;
+  padding:24px;
+  min-height:180px;
+  box-shadow:var(--shadow);
+  transition:.25s ease;
+}
+
+.home-category-card:hover{
+  transform:translateY(-6px);
+  border-color:var(--primary);
+}
+
+.home-category-card i,
+.home-category-card svg{
+  width:32px;
+  height:32px;
+  color:var(--primary);
+  margin-bottom:18px;
+}
+
+.home-category-card strong{
+  display:block;
+  font-size:22px;
+  font-weight:800;
+  margin-bottom:8px;
+}
+
+.home-category-card span{
+  color:var(--muted);
+  font-size:15px;
+}
+
+/* ranking */
+
+.topic-rank{
+  position:absolute;
+  top:18px;
+  right:18px;
+  font-size:13px;
+  font-weight:800;
+  color:var(--primary);
+  background:var(--primary-soft);
+  padding:5px 10px;
+  border-radius:999px;
+}
