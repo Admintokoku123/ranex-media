@@ -350,7 +350,8 @@ async function approveSubmission(id) {
       cover_url: submission.cover_url,
       category_id: categoryData?.id || null,
       author_id: currentUser.id,
-      writer_name: submission.writer_name,
+     writer_name: submission.writer_name,
+  writer_email: submission.writer_email,
       status: "published"
     });
 
