@@ -160,6 +160,18 @@ async function loadArticleDetail() {
   data.writer_name ||
   data.profiles?.name ||
   "Redaksi Ranex";
+  const authorProfileLink =
+  document.getElementById("authorProfileLink");
+
+if (authorProfileLink) {
+  const authorName =
+    data.writer_name ||
+    data.profiles?.name ||
+    "Tim Ranex Media";
+
+  authorProfileLink.href =
+    `penulis.html?name=${encodeURIComponent(authorName)}`;
+}
   const authorBoxName =
 document.getElementById("authorBoxName");
 
