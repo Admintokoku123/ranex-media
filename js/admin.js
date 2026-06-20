@@ -1,6 +1,11 @@
+
 let currentUser = null;
 let currentProfile = null;
+let selectedArticleId = null;
 
+/* =========================
+   ELEMENTS
+========================= */
 const adminMenuButtons = document.querySelectorAll(".admin-menu button");
 const adminTabs = document.querySelectorAll(".admin-tab");
 
@@ -20,7 +25,7 @@ const coverInput = document.getElementById("articleCover");
 const coverPreviewArea = document.getElementById("coverPreviewArea");
 
 /* =========================
-   UTIL
+   SLUG
 ========================= */
 function generateSlug(text) {
   return text
@@ -43,8 +48,8 @@ coverInput?.addEventListener("change", () => {
   reader.onload = () => {
     coverPreviewArea.innerHTML = `
       <div class="cover-preview-simple">
-        <img src="${reader.result}" alt="Preview Cover">
-        <button type="button" class="danger-btn" id="removeCoverBtn">Hapus Gambar</button>
+        <img src="${reader.result}">
+        <button type="button" class="danger-btn" id="removeCoverBtn">Hapus</button>
       </div>
     `;
 
@@ -64,15 +69,15 @@ async function uploadCoverImage() {
   const file = coverInput?.files[0];
   if (!file) return null;
 
-  const fileExt = file.name.split(".").pop();
-  const fileName = `${Date.now()}-${Math.random().toString(36).slice(2)}.${fileExt}`;
+  const ext = file.name.split(".").pop();
+  const fileName = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
 
   const { error } = await supabaseClient
     .storage
     .from("article-covers")
     .upload(fileName, file);
 
-  if (error) throw new Error("Gagal upload cover");
+  if (error) throw error;
 
   const { data } = supabaseClient
     .storage
@@ -83,16 +88,16 @@ async function uploadCoverImage() {
 }
 
 /* =========================
-   MENU SWITCH
+   MENU
 ========================= */
-adminMenuButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    const target = button.dataset.adminTab;
+adminMenuButtons.forEach(btn => {
+  btn.addEventListener("click", () => {
+    const target = btn.dataset.adminTab;
 
     adminMenuButtons.forEach(b => b.classList.remove("active"));
     adminTabs.forEach(t => t.classList.remove("active"));
 
-    button.classList.add("active");
+    btn.classList.add("active");
     document.getElementById(target)?.classList.add("active");
 
     lucide.createIcons();
@@ -104,7 +109,7 @@ quickAddArticle?.addEventListener("click", () => {
 });
 
 /* =========================
-   AUTH CHECK
+   AUTH
 ========================= */
 async function checkAdminAccess() {
   const { data } = await supabaseClient.auth.getSession();
@@ -123,18 +128,13 @@ async function checkAdminAccess() {
     .eq("id", currentUser.id)
     .single();
 
-  if (!profile) {
-    showToast("Profil tidak ditemukan");
-    return false;
-  }
-
-  currentProfile = profile;
-
-  if (profile.role !== "admin") {
+  if (!profile || profile.role !== "admin") {
     showToast("Akses ditolak");
     window.location.href = "index.html";
     return false;
   }
+
+  currentProfile = profile;
 
   document.getElementById("adminName").textContent = profile.name || "Admin";
   document.getElementById("adminRole").textContent = profile.role;
@@ -148,12 +148,12 @@ async function checkAdminAccess() {
 async function loadCategories() {
   const { data } = await supabaseClient
     .from("categories")
-    .select("id, name");
+    .select("id,name");
 
   articleCategory.innerHTML = `<option value="">Pilih kategori</option>`;
 
-  data?.forEach(cat => {
-    articleCategory.innerHTML += `<option value="${cat.id}">${cat.name}</option>`;
+  (data || []).forEach(c => {
+    articleCategory.innerHTML += `<option value="${c.id}">${c.name}</option>`;
   });
 }
 
@@ -167,13 +167,21 @@ async function loadArticles() {
     .order("created_at", { ascending: false })
     .limit(10);
 
-  const html = (data || []).map(article => `
+  const html = (data || []).map(a => `
     <div class="admin-list-item">
       <div>
-        <strong>${article.title}</strong>
-        <span>${article.categories?.name || "No kategori"} • ${article.status}</span>
+        <strong>${a.title}</strong>
+        <span>${a.categories?.name || "No kategori"} • ${a.status}</span>
       </div>
-      <a href="detail.html?slug=${article.slug}" class="outline-btn">Lihat</a>
+
+      <div>
+        <a href="detail.html?slug=${a.slug}" class="outline-btn">Lihat</a>
+
+        <button class="outline-btn"
+          onclick="openActionModal('${a.id}', '${a.title}')">
+          Aksi
+        </button>
+      </div>
     </div>
   `).join("");
 
@@ -191,14 +199,15 @@ async function loadUsers() {
     .from("profiles")
     .select("name,email,role");
 
-  adminUserList.innerHTML = (data || []).map(user => `
+  adminUserList.innerHTML = (data || []).map(u => `
     <div class="admin-user-row">
       <div class="comment-avatar">
-        ${(user.name || "U").charAt(0)}
+        ${(u.name || "U").charAt(0)}
       </div>
+
       <div>
-        <strong>${user.name || "-"}</strong>
-        <span>${user.email} • ${user.role}</span>
+        <strong>${u.name || "-"}</strong>
+        <span>${u.email} • ${u.role}</span>
       </div>
     </div>
   `).join("");
@@ -207,35 +216,60 @@ async function loadUsers() {
 }
 
 /* =========================
-   SUBMISSIONS FIX (NO DUPLICATE FUNCTION)
+   SUBMISSIONS
+========================= */
+async function loadSubmissions() {
+  const { data } = await supabaseClient
+    .from("article_submissions")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  submissionList.innerHTML = (data || []).map(s => `
+    <div class="admin-list-item">
+      <div>
+        <strong>${s.title}</strong>
+        <span>${s.category} • ${s.status}</span>
+        ${s.rejection_reason ? `<small style="color:red">${s.rejection_reason}</small>` : ""}
+      </div>
+
+      <div>
+        <button onclick="approveSubmission(${s.id})">Approve</button>
+        <button onclick="rejectSubmission(${s.id})">Reject</button>
+      </div>
+    </div>
+  `).join("");
+}
+
+/* =========================
+   APPROVE / REJECT (FIXED, NO DUPLICATE)
 ========================= */
 async function approveSubmission(id) {
-  const { data: submission } = await supabaseClient
+  const { data: sub } = await supabaseClient
     .from("article_submissions")
     .select("*")
     .eq("id", id)
     .single();
 
-  if (!submission) return;
+  if (!sub) return;
 
-  const slug = `${generateSlug(submission.title)}-${Date.now()}`;
+  const slug = `${generateSlug(sub.title)}-${Date.now()}`;
 
-  const { data: category } = await supabaseClient
+  const { data: cat } = await supabaseClient
     .from("categories")
     .select("id")
-    .eq("name", submission.category)
+    .eq("name", sub.category)
     .single();
 
   await supabaseClient.from("articles").insert({
-    title: submission.title,
+    title: sub.title,
     slug,
-    excerpt: submission.excerpt,
-    content: submission.content,
-    cover_url: submission.cover_url,
-    category_id: category?.id || null,
-    author_id: submission.user_id,
-    writer_name: submission.writer_name,
-    writer_email: submission.writer_email,
+    excerpt: sub.excerpt,
+    content: sub.content,
+    cover_url: sub.cover_url,
+    category_id: cat?.id || null,
+    author_id: sub.user_id,
+    writer_name: sub.writer_name,
+    writer_email: sub.writer_email,
     status: "published"
   });
 
@@ -246,6 +280,7 @@ async function approveSubmission(id) {
 
   showToast("Disetujui");
   loadSubmissions();
+  loadArticles();
 }
 
 async function rejectSubmission(id) {
@@ -254,10 +289,7 @@ async function rejectSubmission(id) {
 
   await supabaseClient
     .from("article_submissions")
-    .update({
-      status: "rejected",
-      rejection_reason: reason
-    })
+    .update({ status: "rejected", rejection_reason: reason })
     .eq("id", id);
 
   showToast("Ditolak");
@@ -265,27 +297,90 @@ async function rejectSubmission(id) {
 }
 
 /* =========================
-   SUBMISSION LIST
+   ACTION MODAL (REVIEW FEATURE)
 ========================= */
-async function loadSubmissions() {
-  const { data } = await supabaseClient
-    .from("article_submissions")
-    .select("*");
+function openActionModal(id, title) {
+  selectedArticleId = id;
 
-  submissionList.innerHTML = (data || []).map(item => `
-    <div class="admin-list-item">
-      <div>
-        <strong>${item.title}</strong>
-        <span>${item.category} • ${item.status}</span>
-        ${item.rejection_reason ? `<small style="color:red">${item.rejection_reason}</small>` : ""}
-      </div>
-      <div>
-        <button onclick="approveSubmission(${item.id})">Approve</button>
-        <button onclick="rejectSubmission(${item.id})">Reject</button>
-      </div>
-    </div>
-  `).join("");
+  document.getElementById("modalArticleTitle").textContent = title;
+  document.getElementById("actionModal").classList.remove("hidden");
 }
+
+document.getElementById("closeModal")?.addEventListener("click", () => {
+  document.getElementById("actionModal").classList.add("hidden");
+});
+
+document.getElementById("btnApprove").onclick = async () => {
+  await supabaseClient.from("articles")
+    .update({ status: "published" })
+    .eq("id", selectedArticleId);
+
+  showToast("Disetujui");
+  document.getElementById("actionModal").classList.add("hidden");
+  loadArticles();
+};
+
+document.getElementById("btnReject").onclick = async () => {
+  const reason = prompt("Alasan:");
+  if (!reason) return;
+
+  await supabaseClient.from("articles")
+    .update({ status: "rejected", rejection_reason: reason })
+    .eq("id", selectedArticleId);
+
+  showToast("Ditolak");
+  document.getElementById("actionModal").classList.add("hidden");
+  loadArticles();
+};
+
+document.getElementById("btnReview").onclick = () => {
+  window.open(`detail.html?slug=${selectedArticleId}`, "_blank");
+};
+
+document.getElementById("btnDelete").onclick = async () => {
+  if (!confirm("Hapus artikel?")) return;
+
+  await supabaseClient
+    .from("articles")
+    .delete()
+    .eq("id", selectedArticleId);
+
+  showToast("Dihapus");
+  document.getElementById("actionModal").classList.add("hidden");
+  loadArticles();
+};
+
+/* =========================
+   ARTICLE FORM
+========================= */
+articleForm?.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const title = document.getElementById("articleTitle").value;
+  const excerpt = document.getElementById("articleExcerpt").value;
+  const content = document.getElementById("articleContent").value;
+  const categoryId = document.getElementById("articleCategory").value;
+
+  const cover = await uploadCoverImage();
+  const slug = `${generateSlug(title)}-${Date.now()}`;
+
+  await supabaseClient.from("articles").insert({
+    title,
+    slug,
+    excerpt,
+    content,
+    cover_url: cover,
+    category_id: categoryId,
+    author_id: currentUser.id,
+    writer_name: "Tim Ranex",
+    status: "published"
+  });
+
+  showToast("Berhasil");
+  articleForm.reset();
+
+  loadArticles();
+});
 
 /* =========================
    INIT
