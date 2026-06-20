@@ -227,7 +227,15 @@ async function loadProfile() {
    EDIT BUTTON
 ========================= */
 editProfileBtn?.addEventListener("click", () => {
-  document.querySelector('[data-tab="settings"]')?.click();
+  const btn = document.querySelector('.profile-menu button[data-tab="settings"]');
+
+  if (!btn) return;
+
+  btn.click(); // ini trigger system asli kamu
+
+  setTimeout(() => {
+    document.querySelector('.settings-form input[type="text"]')?.focus();
+  }, 200);
 });
 
 /* =========================
