@@ -1,18 +1,28 @@
 /* =========================
    STATE
 ========================= */
+let currentUser = null;
+
+/* =========================
+   DOM ELEMENTS
+========================= */
 const profileMenuButtons = document.querySelectorAll(".profile-menu button");
 const profileTabs = document.querySelectorAll(".profile-tab");
+
 const logoutBtn = document.getElementById("logoutBtn");
 const settingsForm = document.querySelector(".settings-form");
 const avatarInput = document.getElementById("avatarInput");
 const profileAvatarImg = document.getElementById("profileAvatarImg");
 const editProfileBtn = document.getElementById("editProfileBtn");
 
-let currentUser = null;
+/* NOTIF */
+const notifBtn = document.getElementById("notifBtn");
+const notifDropdown = document.getElementById("notifDropdown");
+const notifList = document.getElementById("notifList");
+const notifBadge = document.getElementById("notifBadge");
 
 /* =========================
-   UI HELPERS (ANIMASI NOTIF)
+   NOTIFICATION SYSTEM
 ========================= */
 function showNotify(message, type = "success") {
   const el = document.createElement("div");
@@ -29,9 +39,77 @@ function showNotify(message, type = "success") {
   }, 3000);
 }
 
-function setText(id, value) {
-  const el = document.getElementById(id);
-  if (el) el.textContent = value;
+function renderNotifications(items = []) {
+  if (!notifList) return;
+
+  if (!items.length) {
+    notifList.innerHTML = `<div class="notif-empty">Belum ada notifikasi</div>`;
+    return;
+  }
+
+  notifList.innerHTML = items.map(n => `
+    <div class="notif-item ${n.is_read ? "read" : "unread"}">
+      <strong>${n.title}</strong>
+      <p>${n.message}</p>
+    </div>
+  `).join("");
+}
+
+function updateNotifBadge(items = []) {
+  const unread = items.filter(n => !n.is_read).length;
+
+  if (!notifBadge) return;
+
+  notifBadge.textContent = unread;
+  notifBadge.style.display = unread > 0 ? "flex" : "none";
+}
+
+async function loadNotifications(userId) {
+  const { data, error } = await supabaseClient
+    .from("notifications")
+    .select("*")
+    .eq("user_id", userId)
+    .order("created_at", { ascending: false });
+
+  if (error) return console.error(error);
+
+  renderNotifications(data || []);
+  updateNotifBadge(data || []);
+}
+
+function subscribeNotifications(userId) {
+  supabaseClient
+    .channel("notifications-channel")
+    .on(
+      "postgres_changes",
+      {
+        event: "INSERT",
+        schema: "public",
+        table: "notifications",
+        filter: `user_id=eq.${userId}`
+      },
+      (payload) => {
+        const n = payload.new;
+
+        if (notifList) {
+          const el = document.createElement("div");
+          el.className = "notif-item unread";
+          el.innerHTML = `
+            <strong>${n.title}</strong>
+            <p>${n.message}</p>
+          `;
+          notifList.prepend(el);
+        }
+
+        loadNotifications(userId);
+
+        showNotify(n.title, "success");
+
+        notifBtn?.classList.add("shake");
+        setTimeout(() => notifBtn?.classList.remove("shake"), 600);
+      }
+    )
+    .subscribe();
 }
 
 /* =========================
@@ -41,29 +119,37 @@ profileMenuButtons.forEach((button) => {
   button.addEventListener("click", () => {
     const target = button.dataset.tab;
 
-    profileMenuButtons.forEach((btn) => btn.classList.remove("active"));
-    profileTabs.forEach((tab) => tab.classList.remove("active"));
+    profileMenuButtons.forEach(btn => btn.classList.remove("active"));
+    profileTabs.forEach(tab => tab.classList.remove("active"));
 
     button.classList.add("active");
     document.getElementById(target)?.classList.add("active");
 
-    if (window.lucide) lucide.createIcons();
+    lucide?.createIcons();
   });
 });
+
+/* =========================
+   HELPERS
+========================= */
+function setText(id, value) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = value;
+}
 
 /* =========================
    STATS
 ========================= */
 async function loadProfileStats(userId) {
-  const [bookmarks, comments, topics] = await Promise.all([
+  const [b, c, t] = await Promise.all([
     supabaseClient.from("bookmarks").select("id", { count: "exact", head: true }).eq("user_id", userId),
     supabaseClient.from("comments").select("id", { count: "exact", head: true }).eq("user_id", userId),
     supabaseClient.from("forum_topics").select("id", { count: "exact", head: true }).eq("user_id", userId)
   ]);
 
-  setText("savedCount", bookmarks.count || 0);
-  setText("commentCount", comments.count || 0);
-  setText("topicCount", topics.count || 0);
+  setText("savedCount", b.count || 0);
+  setText("commentCount", c.count || 0);
+  setText("topicCount", t.count || 0);
 }
 
 /* =========================
@@ -86,16 +172,15 @@ async function loadSavedArticles(userId) {
         categories(name)
       )
     `)
-    .eq("user_id", userId)
-    .order("created_at", { ascending: false });
+    .eq("user_id", userId);
 
   if (error || !data?.length) {
     box.innerHTML = `<div class="empty-state">Belum ada artikel tersimpan.</div>`;
     return;
   }
 
-  box.innerHTML = data.map((item) => {
-    const a = item.articles;
+  box.innerHTML = data.map(i => {
+    const a = i.articles;
     if (!a) return "";
 
     return `
@@ -126,15 +211,14 @@ async function loadMyComments(userId) {
       created_at,
       articles(title, slug)
     `)
-    .eq("user_id", userId)
-    .order("created_at", { ascending: false });
+    .eq("user_id", userId);
 
   if (error || !data?.length) {
     box.innerHTML = `<div class="empty-state">Belum ada komentar.</div>`;
     return;
   }
 
-  box.innerHTML = data.map((c) => `
+  box.innerHTML = data.map(c => `
     <div class="comment-item">
       <div class="comment-avatar">K</div>
       <div>
@@ -156,15 +240,14 @@ async function loadMyForum(userId) {
   const { data, error } = await supabaseClient
     .from("forum_topics")
     .select("id, title, category, views")
-    .eq("user_id", userId)
-    .order("created_at", { ascending: false });
+    .eq("user_id", userId);
 
   if (error || !data?.length) {
     box.innerHTML = `<div class="empty-state">Belum ada topik forum.</div>`;
     return;
   }
 
-  box.innerHTML = data.map((t) => `
+  box.innerHTML = data.map(t => `
     <a href="forum-detail.html?id=${t.id}" class="forum-mini-card">
       <i data-lucide="messages-square"></i>
       <div>
@@ -178,18 +261,17 @@ async function loadMyForum(userId) {
 }
 
 /* =========================
-   PROFILE LOAD
+   LOAD PROFILE
 ========================= */
 async function loadProfile() {
-  const { data: sessionData } = await supabaseClient.auth.getSession();
+  const { data: session } = await supabaseClient.auth.getSession();
 
-  if (!sessionData.session) {
+  if (!session.session) {
     showNotify("Silakan login terlebih dahulu", "error");
-    setTimeout(() => (window.location.href = "login.html"), 900);
-    return;
+    return setTimeout(() => (window.location.href = "login.html"), 800);
   }
 
-  const user = sessionData.session.user;
+  const user = session.session.user;
   currentUser = user;
 
   const { data: profile } = await supabaseClient
@@ -201,7 +283,6 @@ async function loadProfile() {
   const name = profile?.name || user.email;
   const email = profile?.email || user.email;
   const role = profile?.role || "member";
-  const bio = profile?.bio || "Member Ranex Media";
 
   document.querySelector(".profile-main h1").textContent = name;
   document.querySelector(".profile-main p").textContent = email;
@@ -209,33 +290,19 @@ async function loadProfile() {
 
   if (profile?.avatar_url) profileAvatarImg.src = profile.avatar_url;
 
-  const nameInput = document.querySelector('.settings-form input[type="text"]');
-  const emailInput = document.querySelector('.settings-form input[type="email"]');
-  const bioInput = document.querySelector(".settings-form textarea");
-
-  if (nameInput) nameInput.value = name;
-  if (emailInput) emailInput.value = email;
-  if (bioInput) bioInput.value = bio;
-
   await loadProfileStats(user.id);
   await loadSavedArticles(user.id);
   await loadMyComments(user.id);
   await loadMyForum(user.id);
+  await loadNotifications(user.id);
+  subscribeNotifications(user.id);
 }
 
 /* =========================
-   EDIT BUTTON
+   EDIT PROFILE BUTTON
 ========================= */
 editProfileBtn?.addEventListener("click", () => {
-  const btn = document.querySelector('.profile-menu button[data-tab="settings"]');
-
-  if (!btn) return;
-
-  btn.click(); // ini trigger system asli kamu
-
-  setTimeout(() => {
-    document.querySelector('.settings-form input[type="text"]')?.focus();
-  }, 200);
+  document.querySelector('.profile-menu button[data-tab="settings"]')?.click();
 });
 
 /* =========================
@@ -244,8 +311,8 @@ editProfileBtn?.addEventListener("click", () => {
 settingsForm?.addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  const name = document.querySelector('.settings-form input[type="text"]').value.trim();
-  const bio = document.querySelector(".settings-form textarea").value.trim();
+  const name = settingsForm.querySelector('input[type="text"]').value.trim();
+  const bio = settingsForm.querySelector("textarea").value.trim();
 
   if (!name) return showNotify("Nama wajib diisi", "error");
 
@@ -257,11 +324,12 @@ settingsForm?.addEventListener("submit", async (e) => {
   if (error) return showNotify("Gagal update profil", "error");
 
   document.querySelector(".profile-main h1").textContent = name;
+
   showNotify("Profil berhasil diperbarui 🎉", "success");
 });
 
 /* =========================
-   AVATAR UPLOAD
+   AVATAR
 ========================= */
 avatarInput?.addEventListener("change", async () => {
   const file = avatarInput.files[0];
@@ -271,11 +339,11 @@ avatarInput?.addEventListener("change", async () => {
 
   showNotify("Upload foto...", "info");
 
-  const { error: uploadError } = await supabaseClient.storage
+  const { error } = await supabaseClient.storage
     .from("avatars")
     .upload(fileName, file);
 
-  if (uploadError) return showNotify("Upload gagal", "error");
+  if (error) return showNotify("Upload gagal", "error");
 
   const { data } = supabaseClient.storage.from("avatars").getPublicUrl(fileName);
 
@@ -286,7 +354,7 @@ avatarInput?.addEventListener("change", async () => {
 
   profileAvatarImg.src = data.publicUrl;
 
-  showNotify("Foto profil diperbarui", "success");
+  showNotify("Foto profil berhasil diperbarui", "success");
 });
 
 /* =========================
@@ -295,27 +363,28 @@ avatarInput?.addEventListener("change", async () => {
 logoutBtn?.addEventListener("click", async () => {
   await supabaseClient.auth.signOut();
   showNotify("Logout berhasil", "success");
-
   setTimeout(() => (window.location.href = "login.html"), 800);
+});
+
+/* =========================
+   NOTIF TOGGLE
+========================= */
+notifBtn?.addEventListener("click", (e) => {
+  e.stopPropagation();
+  notifDropdown?.classList.toggle("show");
+});
+
+document.addEventListener("click", (e) => {
+  if (!notifDropdown?.contains(e.target) && !notifBtn?.contains(e.target)) {
+    notifDropdown?.classList.remove("show");
+  }
 });
 
 /* =========================
    INIT
 ========================= */
 window.addEventListener("DOMContentLoaded", () => {
-  const notifBtn = document.getElementById("notifBtn");
-  const notifDropdown = document.getElementById("notifDropdown");
-
-  notifBtn?.addEventListener("click", () => {
-    notifDropdown?.classList.toggle("show");
-  });
+  lucide?.createIcons();
 });
 
 loadProfile();
-
-const notifBtn = document.getElementById("notifBtn");
-const notifDropdown = document.getElementById("notifDropdown");
-
-notifBtn?.addEventListener("click", () => {
-  notifDropdown.classList.toggle("show");
-});
