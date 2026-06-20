@@ -82,15 +82,23 @@ async function loadPopularTopics() {
     .sort((a, b) => b[1] - a[1])
     .slice(0, 6);
 
-  popularTopics.innerHTML = sortedTopics.map(([category, count]) => {
-    return `
-      <a href="berita.html?kategori=${encodeURIComponent(category)}" class="home-category-card">
-        <i data-lucide="${getTopicIcon(category)}"></i>
-        <strong>${category}</strong>
-        <span>${getTopicDesc(category, count)}</span>
-      </a>
-    `;
-  }).join("");
+ popularTopics.innerHTML = sortedTopics.map(([category, count], index) => {
+  return `
+    <a href="berita.html?kategori=${encodeURIComponent(category)}" class="home-category-card">
+
+      <div class="topic-rank">
+        #${index + 1}
+      </div>
+
+      <i data-lucide="${getTopicIcon(category)}"></i>
+
+      <strong>${category}</strong>
+
+      <span>${count} Artikel</span>
+
+    </a>
+  `;
+}).join("");
 
   if (window.lucide) lucide.createIcons();
 }
