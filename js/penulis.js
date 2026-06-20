@@ -6,9 +6,9 @@ const authorReaderCount = document.getElementById("authorReaderCount");
 const authorJoinYear = document.getElementById("authorJoinYear");
 const authorArticleTitle = document.getElementById("authorArticleTitle");
 const authorArticleGrid = document.getElementById("authorArticleGrid");
+
 const params = new URLSearchParams(window.location.search);
 const authorNameParam = params.get("name");
-
 
 function formatDate(date) {
   return new Date(date).toLocaleDateString("id-ID", {
@@ -26,7 +26,10 @@ async function loadAdminAuthor() {
     .eq("email", "ranex.support@gmail.com")
     .single();
 
-  if (!profile) return;
+  if (!profile) {
+    authorName.textContent = "Penulis tidak ditemukan";
+    return;
+  }
 
   authorName.textContent =
     profile.name || "Tim Ranex Media";
@@ -42,69 +45,31 @@ async function loadAdminAuthor() {
   authorJoinYear.textContent =
     new Date(profile.created_at).getFullYear();
 
-}
-
-async function loadAuthorPage() {
-
-  if (
-    !authorNameParam ||
-    authorNameParam === "Tim Ranex Media"
-  ) {
-
-    loadAdminAuthor();
-    return;
-  }
-
-  loadContributorAuthor();
-}
-
-async function loadContributorAuthor() {
-
-  authorName.textContent =
-    authorNameParam;
-
-  authorBio.textContent =
-    "Kontributor Ranex Media";
-
-  authorAvatar.src =
-    "assets/logo-ranex-media.png";
-
-  authorJoinYear.textContent =
-    "2026";
-
-  const { data: articles, error } =
-    await supabaseClient
-      .from("articles")
-      .select(`
-        id,
-        title,
-        slug,
-        excerpt,
-        cover_url,
-        created_at,
-        categories(name)
-      `)
-      .eq("writer_name", authorNameParam)
-      .eq("status", "published")
-      .order("created_at", {
-        ascending: false
-      });
-
-  if (error) {
-    console.error(error);
-    return;
-  }
+  const { data: articles } = await supabaseClient
+    .from("articles")
+    .select(`
+      id,
+      title,
+      slug,
+      excerpt,
+      cover_url,
+      created_at,
+      categories(name)
+    `)
+    .eq("author_id", profile.id)
+    .eq("status", "published")
+    .order("created_at", { ascending: false });
 
   authorArticleCount.textContent =
-    articles.length || 0;
+    articles?.length || 0;
 
   authorReaderCount.textContent = "0";
 
   authorArticleTitle.textContent =
-    `Artikel dari ${authorNameParam}`;
+    `Artikel dari ${authorName.textContent}`;
 
   authorArticleGrid.innerHTML =
-    articles.map(article => `
+    (articles || []).map(article => `
       <a href="detail.html?slug=${article.slug}" class="author-article-card">
 
         <img
@@ -122,33 +87,23 @@ async function loadContributorAuthor() {
 
       </a>
     `).join("");
-
 }
-  if (profileError || !profile) {
-    console.error(profileError);
-    authorName.textContent = "Penulis tidak ditemukan";
-    authorBio.textContent = "Profil penulis belum tersedia.";
-    authorArticleGrid.innerHTML = `<div class="empty-state">Belum ada data penulis.</div>`;
-    return;
-  }
 
-  const name = profile.name || "Admin Ranex Media";
-  const bio = profile.bio || "Pengelola Ranex Media yang menulis tentang bisnis digital, teknologi, UMKM, legalitas usaha, marketplace, dan perkembangan dunia digital.";
-  const avatar = profile.avatar_url || "assets/logo-ranex-media.png";
-  const joinYear = profile.created_at
-    ? new Date(profile.created_at).getFullYear()
-    : 2026;
+async function loadContributorAuthor() {
 
-  document.title = `${name} | Penulis Ranex Media`;
+  authorName.textContent =
+    authorNameParam;
 
-  authorName.textContent = name;
-  authorBio.textContent = bio;
-  authorAvatar.src = avatar;
-  authorAvatar.alt = name;
-  authorJoinYear.textContent = joinYear;
-  authorArticleTitle.textContent = `Artikel dari ${name}`;
+  authorBio.textContent =
+    "Kontributor Ranex Media";
 
-  const { data: articles, error: articleError } = await supabaseClient
+  authorAvatar.src =
+    "assets/logo-ranex-media.png";
+
+  authorJoinYear.textContent =
+    "2026";
+
+  const { data: articles, error } = await supabaseClient
     .from("articles")
     .select(`
       id,
@@ -159,45 +114,55 @@ async function loadContributorAuthor() {
       created_at,
       categories(name)
     `)
-    .eq("author_id", profile.id)
+    .eq("writer_name", authorNameParam)
     .eq("status", "published")
     .order("created_at", { ascending: false });
 
-  if (articleError) {
-    console.error(articleError);
-    authorArticleGrid.innerHTML = `<div class="empty-state">Gagal memuat artikel penulis.</div>`;
+  if (error) {
+    console.error(error);
     return;
   }
 
-  authorArticleCount.textContent = articles.length || 0;
-  authorReaderCount.textContent = "0";
+  authorArticleCount.textContent =
+    articles?.length || 0;
 
-  if (!articles.length) {
-    authorArticleGrid.innerHTML = `<div class="empty-state">Belum ada artikel dari penulis ini.</div>`;
-    return;
+  authorReaderCount.textContent =
+    "0";
+
+  authorArticleTitle.textContent =
+    `Artikel dari ${authorNameParam}`;
+
+  authorArticleGrid.innerHTML =
+    (articles || []).map(article => `
+      <a href="detail.html?slug=${article.slug}" class="author-article-card">
+
+        <img
+          src="${article.cover_url || "assets/logo-ranex-media.png"}"
+          alt="${article.title}"
+          class="author-article-cover">
+
+        <span>${article.categories?.name || "Artikel"}</span>
+
+        <h3>${article.title}</h3>
+
+        <p>${article.excerpt || ""}</p>
+
+        <small>${formatDate(article.created_at)}</small>
+
+      </a>
+    `).join("");
+}
+
+async function loadAuthorPage() {
+
+  if (
+    !authorNameParam ||
+    authorNameParam === "Tim Ranex Media"
+  ) {
+    await loadAdminAuthor();
+  } else {
+    await loadContributorAuthor();
   }
-
-  authorArticleGrid.innerHTML = articles.map(article => `
-    <a href="detail.html?slug=${article.slug}" class="author-article-card">
-
-      <img
-        src="${article.cover_url || "assets/logo-ranex-media.png"}"
-        alt="${article.title}"
-        class="author-article-cover"
-      >
-
-      <span>${article.categories?.name || "Artikel"}</span>
-
-      <h3>${article.title}</h3>
-
-      <p>${article.excerpt || ""}</p>
-
-      <small>${formatDate(article.created_at)} • 6 menit baca</small>
-
-    </a>
-  `).join("");
-
-  if (window.lucide) lucide.createIcons();
 }
 
 loadAuthorPage();
