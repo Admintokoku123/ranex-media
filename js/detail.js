@@ -131,6 +131,7 @@ async function loadArticleDetail() {
       excerpt,
       content,
       cover_url,
+      writer_name,
       created_at,
       categories(name),
       profiles(name)
@@ -154,7 +155,10 @@ async function loadArticleDetail() {
   detailCategory.textContent = data.categories?.name || "Artikel";
   detailTitle.textContent = data.title;
   detailExcerpt.textContent = data.excerpt || "";
-  detailAuthor.textContent = data.profiles?.name || "Redaksi Ranex";
+  detailAuthor.textContent =
+  data.writer_name ||
+  data.profiles?.name ||
+  "Redaksi Ranex";
   const wordCount = (data.content || "").trim().split(/\s+/).length;
 const readTime = Math.max(1, Math.ceil(wordCount / 200));
 
