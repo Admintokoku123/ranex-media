@@ -1,5 +1,6 @@
 const homeHeadline = document.getElementById("homeHeadline");
 const homeLatestArticles = document.getElementById("homeLatestArticles");
+const popularTopics = document.getElementById("popularTopics");
 
 function homeCover(article) {
   return article.cover_url || "assets/logo-ranex-media.png";
@@ -11,6 +12,87 @@ function homeDate(date) {
     month: "long",
     year: "numeric"
   });
+}
+
+function getCategoryName(article) {
+  return article.categories?.name || "Artikel";
+}
+
+function getTopicIcon(category) {
+  const name = category.toLowerCase();
+
+  if (name.includes("breaking")) return "radio";
+  if (name.includes("nasional")) return "landmark";
+  if (name.includes("ekonomi")) return "trending-up";
+  if (name.includes("sport")) return "trophy";
+  if (name.includes("selebriti")) return "star";
+  if (name.includes("hukum")) return "scale";
+  if (name.includes("sorotan")) return "flame";
+  if (name.includes("tech")) return "cpu";
+
+  return "newspaper";
+}
+
+function getTopicDesc(category, count) {
+  const name = category.toLowerCase();
+
+  if (name.includes("breaking")) return `${count} artikel terbaru`;
+  if (name.includes("nasional")) return `${count} artikel nasional`;
+  if (name.includes("ekonomi")) return `${count} artikel ekonomi`;
+  if (name.includes("sport")) return `${count} artikel olahraga`;
+  if (name.includes("selebriti")) return `${count} artikel hiburan`;
+  if (name.includes("hukum")) return `${count} artikel hukum`;
+  if (name.includes("sorotan")) return `${count} isu publik`;
+  if (name.includes("tech")) return `${count} artikel teknologi`;
+
+  return `${count} artikel`;
+}
+
+async function loadPopularTopics() {
+  if (!popularTopics) return;
+
+  const { data, error } = await supabaseClient
+    .from("articles")
+    .select(`
+      id,
+      created_at,
+      categories(name)
+    `)
+    .eq("status", "published");
+
+  if (error) {
+    console.error(error);
+    popularTopics.innerHTML = `<div class="empty-state">Gagal memuat topik pilihan.</div>`;
+    return;
+  }
+
+  if (!data || !data.length) {
+    popularTopics.innerHTML = `<div class="empty-state">Belum ada topik pilihan.</div>`;
+    return;
+  }
+
+  const counts = {};
+
+  data.forEach((article) => {
+    const category = article.categories?.name || "Artikel";
+    counts[category] = (counts[category] || 0) + 1;
+  });
+
+  const sortedTopics = Object.entries(counts)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 6);
+
+  popularTopics.innerHTML = sortedTopics.map(([category, count]) => {
+    return `
+      <a href="berita.html?kategori=${encodeURIComponent(category)}" class="home-category-card">
+        <i data-lucide="${getTopicIcon(category)}"></i>
+        <strong>${category}</strong>
+        <span>${getTopicDesc(category, count)}</span>
+      </a>
+    `;
+  }).join("");
+
+  if (window.lucide) lucide.createIcons();
 }
 
 async function loadHomeArticles() {
@@ -53,7 +135,7 @@ async function loadHomeArticles() {
 
     <div class="home-hero-card-content">
       <span class="news-category">
-        ${headline.categories?.name || "Artikel"}
+        ${getCategoryName(headline)}
       </span>
 
       <h3>
@@ -77,7 +159,7 @@ async function loadHomeArticles() {
 
         <div class="news-card-content">
           <span class="news-category">
-            ${article.categories?.name || "Artikel"}
+            ${getCategoryName(article)}
           </span>
 
           <h3>
@@ -97,4 +179,5 @@ async function loadHomeArticles() {
   if (window.lucide) lucide.createIcons();
 }
 
+loadPopularTopics();
 loadHomeArticles();
