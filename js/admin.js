@@ -383,6 +383,44 @@ async function approveSubmission(id) {
   await loadSubmissions();
   await loadArticles();
 }
+async function rejectSubmission(id) {
+  const reason = prompt("Masukkan alasan penolakan:");
+
+  if (!reason) {
+    showToast("Penolakan dibatalkan");
+    return;
+  }
+
+  const { data: submission } = await supabaseClient
+    .from("article_submissions")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if (!submission) {
+    showToast("Data tidak ditemukan");
+    return;
+  }
+
+  await supabaseClient
+    .from("article_submissions")
+    .update({
+      status: "rejected",
+      rejection_reason: reason
+    })
+    .eq("id", id);
+
+  // 🔔 NOTIF USER (ALASAN PENOLAKAN)
+  await supabaseClient.from("notifications").insert({
+    user_id: submission.user_id,
+    title: "Artikel Ditolak ❌",
+    message: `Artikel kamu ditolak. Alasan: ${reason}`
+  });
+
+  showToast("Artikel ditolak");
+
+  await loadSubmissions();
+}
 
 async function rejectSubmission(id) {
   const { error } = await supabaseClient
@@ -399,6 +437,13 @@ async function rejectSubmission(id) {
   showToast("Artikel ditolak");
   await loadSubmissions();
 }
+<span>${item.category || 'Tanpa kategori'} • ${item.status}</span>
+
+${item.rejection_reason ? `
+  <small style="color:red">
+    Alasan: ${item.rejection_reason}
+  </small>
+` : ""}
 articleForm?.addEventListener("submit", async (e) => {
   e.preventDefault();
 
