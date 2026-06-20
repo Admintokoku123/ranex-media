@@ -408,16 +408,17 @@ articleForm?.addEventListener("submit", async (e) => {
     const coverUrl = await uploadCoverImage();
     const slug = `${generateSlug(title)}-${Date.now()}`;
 
-    const { error } = await supabaseClient.from("articles").insert({
-      title,
-      slug,
-      excerpt,
-      content,
-      cover_url: coverUrl,
-      category_id: categoryId || null,
-      author_id: currentUser.id,
-      status: "published"
-    });
+   const { error } = await supabaseClient.from("articles").insert({
+  title,
+  slug,
+  excerpt,
+  content,
+  cover_url: coverUrl,
+  category_id: categoryId || null,
+  author_id: currentUser.id,
+  writer_name: "Tim Ranex Media",
+  status: "published"
+});
 
     if (error) throw error;
 
