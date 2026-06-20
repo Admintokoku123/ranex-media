@@ -45,21 +45,21 @@ async function loadAdminAuthor() {
   authorJoinYear.textContent =
     new Date(profile.created_at).getFullYear();
 
-  const { data: articles } = await supabaseClient
-    .from("articles")
-    .select(`
-      id,
-      title,
-      slug,
-      excerpt,
-      cover_url,
-      created_at,
-      categories(name)
-    `)
-    .eq("author_id", profile.id)
-    .eq("status", "published")
-    .order("created_at", { ascending: false });
-
+ const { data: articles } = await supabaseClient
+  .from("articles")
+  .select(`
+    id,
+    title,
+    slug,
+    excerpt,
+    cover_url,
+    created_at,
+    categories(name)
+  `)
+  .or(`author_id.eq.${profile.id},writer_name.eq.Tim Ranex Media`)
+  .eq("status", "published")
+  .order("created_at", { ascending: false });
+  
   authorArticleCount.textContent =
     articles?.length || 0;
 
