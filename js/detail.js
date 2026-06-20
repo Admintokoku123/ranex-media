@@ -125,17 +125,18 @@ async function loadArticleDetail() {
   const { data, error } = await supabaseClient
     .from("articles")
     .select(`
-      id,
-      title,
-      slug,
-      excerpt,
-      content,
-      cover_url,
-      writer_name,
-      created_at,
-      categories(name),
-      profiles(name)
-    `)
+  id,
+  title,
+  slug,
+  excerpt,
+  content,
+  cover_url,
+  writer_name,
+  writer_email,
+  created_at,
+  categories(name),
+  profiles(name)
+`)
     .eq("slug", slug)
     .eq("status", "published")
     .single();
@@ -159,6 +160,65 @@ async function loadArticleDetail() {
   data.writer_name ||
   data.profiles?.name ||
   "Redaksi Ranex";
+  const authorBoxName =
+document.getElementById("authorBoxName");
+
+const authorBoxBio =
+document.getElementById("authorBoxBio");
+
+const authorProfileLink =
+document.getElementById("authorProfileLink");
+
+const authorContactLink =
+document.getElementById("authorContactLink");
+
+const authorNameValue =
+  data.writer_name ||
+  data.profiles?.name ||
+  "Tim Ranex Media";
+
+if(authorBoxName){
+  authorBoxName.textContent = authorNameValue;
+}
+
+if(authorBoxBio){
+
+  if(data.writer_name){
+
+    authorBoxBio.textContent =
+      "Kontributor Ranex Media.";
+
+  }else{
+
+    authorBoxBio.textContent =
+      "Pengelola Ranex Media dan Ranex Group Indonesia.";
+
+  }
+
+}
+
+if(authorProfileLink){
+
+  authorProfileLink.href =
+    `penulis.html?name=${encodeURIComponent(authorNameValue)}`;
+
+}
+
+if(authorContactLink){
+
+  if(data.writer_name){
+
+    authorContactLink.href =
+      `mailto:${data.writer_email || ""}`;
+
+  }else{
+
+    authorContactLink.href =
+      "kontak.html";
+
+  }
+
+}
   const wordCount = (data.content || "").trim().split(/\s+/).length;
 const readTime = Math.max(1, Math.ceil(wordCount / 200));
 
