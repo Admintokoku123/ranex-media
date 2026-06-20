@@ -206,18 +206,15 @@ if(authorProfileLink){
 
 if(authorContactLink){
 
-  if(data.writer_name){
+ const authorContactLink = document.getElementById("authorContactLink");
 
-    authorContactLink.href =
-      `mailto:${data.writer_email || ""}`;
+// default aman
+authorContactLink.href = "kontak.html";
 
-  }else{
-
-    authorContactLink.href =
-      "kontak.html";
-
-  }
-
+// cek email valid dulu
+if (data.writer_email && data.writer_email.trim() !== "") {
+  authorContactLink.href = `mailto:${data.writer_email}`;
+}
 }
   const wordCount = (data.content || "").trim().split(/\s+/).length;
 const readTime = Math.max(1, Math.ceil(wordCount / 200));
