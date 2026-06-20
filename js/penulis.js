@@ -56,7 +56,7 @@ async function loadAdminAuthor() {
     created_at,
     categories(name)
   `)
-  .or(`author_id.eq.${profile.id},writer_name.eq.Tim Ranex Media`)
+  .eq("writer_name", "Tim Ranex Media")
   .eq("status", "published")
   .order("created_at", { ascending: false });
   
