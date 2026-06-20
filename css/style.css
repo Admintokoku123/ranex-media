@@ -5068,3 +5068,24 @@ html[data-theme="dark"] .site-header {
 .notify-success { background: #22c55e; }
 .notify-error { background: #ef4444; }
 .notify-info { background: #3b82f6; }
+.notif-btn {
+  position: relative;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.notif-btn span {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: red;
+  color: white;
+  font-size: 10px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
