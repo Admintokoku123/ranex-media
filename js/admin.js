@@ -2,11 +2,11 @@
 let currentUser = null;
 let currentProfile = null;
 
-/* SAFE GET */
+/* SAFE GET ELEMENT */
 const $ = (id) => document.getElementById(id);
 
 /* =========================
-   AUTH
+   AUTH CHECK
 ========================= */
 async function checkAdminAccess() {
   const { data } = await supabaseClient.auth.getSession();
@@ -38,131 +38,9 @@ async function checkAdminAccess() {
 }
 
 /* =========================
-   ARTICLES
-========================= */
-async function loadArticles() {
-  const { data } = await supabaseClient
-    .from("articles")
-    .select("id,title,slug,status,created_at,categories(name)")
-    .order("created_at", { ascending: false })
-    .limit(10);
-
-  const list = $("adminArticleList");
-  const latest = $("latestArticles");
-
-  if (!list || !latest) return;
-
-  const html = (data || []).map(a => `
-    <div class="admin-list-item">
-      <div>
-        <strong>${a.title}</strong>
-        <span>${a.categories?.name || "-"} • ${a.status}</span>
-      </div>
-      <a href="detail.html?slug=${a.slug}" class="outline-btn">Lihat</a>
-    </div>
-  `).join("");
-
-  list.innerHTML = html;
-  latest.innerHTML = html;
-
-  if ($("totalArticles")) {
-    $("totalArticles").textContent = data?.length || 0;
-  }
-}
-
-/* =========================
-   USERS
-========================= */
-async function loadUsers() {
-  const { data } = await supabaseClient
-    .from("profiles")
-    .select("name,email,role");
-
-  const list = $("adminUserList");
-  if (!list) return;
-
-  list.innerHTML = (data || []).map(u => `
-    <div class="admin-user-row">
-      <div class="comment-avatar">
-        ${(u.name || "U").charAt(0)}
-      </div>
-      <div>
-        <strong>${u.name || "-"}</strong>
-        <span>${u.email} • ${u.role}</span>
-      </div>
-    </div>
-  `).join("");
-
-  if ($("totalUsers")) {
-    $("totalUsers").textContent = data?.length || 0;
-  }
-}
-
-/* =========================
-   SUBMISSIONS (KIRIMAN ARTIKEL)
-========================= */
-async function loadSubmissions() {
-  const { data } = await supabaseClient
-    .from("article_submissions")
-    .select("*")
-    .order("created_at", { ascending: false });
-
-  const list = $("submissionList");
-  if (!list) return;
-
-  list.innerHTML = (data || []).map(s => `
-    <div class="admin-list-item">
-      <div>
-        <strong>${s.title}</strong>
-        <span>${s.category || "-"} • ${s.status}</span>
-      </div>
-    </div>
-  `).join("");
-}
-
-/* =========================
-   COMMENTS
-========================= */
-async function loadComments() {
-  const { data } = await supabaseClient
-    .from("comments")
-    .select("content,status");
-
-  const list = $("adminCommentList");
-  if (!list) return;
-
-  list.innerHTML = (data || []).map(c => `
-    <div class="admin-list-item">
-      <div>
-        <strong>${c.status}</strong>
-        <span>${c.content}</span>
-      </div>
-    </div>
-  `).join("");
-
-  const pending = (data || []).filter(c => c.status === "pending").length;
-  if ($("totalComments")) {
-    $("totalComments").textContent = pending;
-  }
-}
-
-/* =========================
-   FORUM COUNT
-========================= */
-async function loadForum() {
-  const { data } = await supabaseClient
-    .from("forum_topics")
-    .select("id");
-
-  if ($("totalTopics")) {
-    $("totalTopics").textContent = data?.length || 0;
-  }
-}
-
-/* =========================
    DASHBOARD STATS (SAFE)
 ========================= */
-async function loadStats() {
+async function loadDashboardStats() {
   const [
     articles,
     users,
@@ -182,18 +60,13 @@ async function loadStats() {
 }
 
 /* =========================
-   INIT (SAFE ORDER FIX)
+   INIT PART 1
 ========================= */
 async function initAdmin() {
   const ok = await checkAdminAccess();
   if (!ok) return;
 
-  await loadStats();
-  await loadArticles();
-  await loadUsers();
-  await loadSubmissions();
-  await loadComments();
-  await loadForum();
+  await loadDashboardStats();
 }
 
 initAdmin();
