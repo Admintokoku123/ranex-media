@@ -14,7 +14,6 @@ const adminArticleList = document.getElementById("adminArticleList");
 const latestArticles = document.getElementById("latestArticles");
 
 const adminUserList = document.getElementById("adminUserList");
-const quickAddArticle = document.getElementById("quickAddArticle");
 const articleCategory = document.getElementById("articleCategory");
 
 const submissionList = document.getElementById("submissionList");
@@ -88,7 +87,7 @@ async function uploadCoverImage() {
 }
 
 /* =========================
-   MENU
+   MENU NAV
 ========================= */
 adminMenuButtons.forEach(btn => {
   btn.addEventListener("click", () => {
@@ -104,12 +103,8 @@ adminMenuButtons.forEach(btn => {
   });
 });
 
-quickAddArticle?.addEventListener("click", () => {
-  document.querySelector('[data-admin-tab="articles"]')?.click();
-});
-
 /* =========================
-   AUTH
+   AUTH CHECK
 ========================= */
 async function checkAdminAccess() {
   const { data } = await supabaseClient.auth.getSession();
@@ -158,7 +153,7 @@ async function loadCategories() {
 }
 
 /* =========================
-   ARTICLES
+   ARTICLES (TANPA AKSI)
 ========================= */
 async function loadArticles() {
   const { data } = await supabaseClient
@@ -174,14 +169,7 @@ async function loadArticles() {
         <span>${a.categories?.name || "No kategori"} • ${a.status}</span>
       </div>
 
-      <div>
-        <a href="detail.html?slug=${a.slug}" class="outline-btn">Lihat</a>
-
-        <button class="outline-btn"
-          onclick="openActionModal('${a.id}', '${a.title}')">
-          Aksi
-        </button>
-      </div>
+      <a href="detail.html?slug=${a.slug}" class="outline-btn">Lihat</a>
     </div>
   `).join("");
 
@@ -216,7 +204,7 @@ async function loadUsers() {
 }
 
 /* =========================
-   SUBMISSIONS
+   SUBMISSIONS (WITH ACTION BUTTON)
 ========================= */
 async function loadSubmissions() {
   const { data } = await supabaseClient
@@ -232,16 +220,17 @@ async function loadSubmissions() {
         ${s.rejection_reason ? `<small style="color:red">${s.rejection_reason}</small>` : ""}
       </div>
 
-      <div>
-        <button onclick="approveSubmission(${s.id})">Approve</button>
-        <button onclick="rejectSubmission(${s.id})">Reject</button>
+      <div class="submission-actions">
+        <button class="approve-btn" onclick="approveSubmission(${s.id})">Setujui</button>
+        <button class="danger-btn" onclick="rejectSubmission(${s.id})">Tolak</button>
+        <button class="outline-btn" onclick="openActionModal(${s.id}, '${s.title}')">Aksi</button>
       </div>
     </div>
   `).join("");
 }
 
 /* =========================
-   APPROVE / REJECT (FIXED, NO DUPLICATE)
+   APPROVE / REJECT
 ========================= */
 async function approveSubmission(id) {
   const { data: sub } = await supabaseClient
@@ -278,9 +267,9 @@ async function approveSubmission(id) {
     .update({ status: "approved" })
     .eq("id", id);
 
-  showToast("Disetujui");
-  loadSubmissions();
+  showToast("Artikel disetujui");
   loadArticles();
+  loadSubmissions();
 }
 
 async function rejectSubmission(id) {
@@ -292,12 +281,12 @@ async function rejectSubmission(id) {
     .update({ status: "rejected", rejection_reason: reason })
     .eq("id", id);
 
-  showToast("Ditolak");
+  showToast("Artikel ditolak");
   loadSubmissions();
 }
 
 /* =========================
-   ACTION MODAL (REVIEW FEATURE)
+   ACTION MODAL (REVIEW POPUP)
 ========================= */
 function openActionModal(id, title) {
   selectedArticleId = id;
@@ -351,36 +340,56 @@ document.getElementById("btnDelete").onclick = async () => {
 };
 
 /* =========================
-   ARTICLE FORM
+   DASHBOARD STATS (FULL FIX 2 MISSING)
 ========================= */
-articleForm?.addEventListener("submit", async (e) => {
-  e.preventDefault();
+async function loadDashboardStats() {
+  const [
+    articles,
+    users,
+    comments,
+    topics,
+    replies,
+    submissions
+  ] = await Promise.all([
+    supabaseClient.from("articles").select("id", { count: "exact", head: true }),
+    supabaseClient.from("profiles").select("id", { count: "exact", head: true }),
+    supabaseClient.from("comments").select("id", { count: "exact", head: true }).eq("status", "pending"),
+    supabaseClient.from("forum_topics").select("id", { count: "exact", head: true }),
+    supabaseClient.from("forum_replies").select("id", { count: "exact", head: true }),
+    supabaseClient.from("article_submissions").select("id", { count: "exact", head: true }).eq("status", "pending")
+  ]);
 
-  const title = document.getElementById("articleTitle").value;
-  const excerpt = document.getElementById("articleExcerpt").value;
-  const content = document.getElementById("articleContent").value;
-  const categoryId = document.getElementById("articleCategory").value;
+  document.getElementById("totalArticles").textContent = articles.count || 0;
+  document.getElementById("totalUsers").textContent = users.count || 0;
+  document.getElementById("totalComments").textContent = comments.count || 0;
+  document.getElementById("totalTopics").textContent = topics.count || 0;
 
-  const cover = await uploadCoverImage();
-  const slug = `${generateSlug(title)}-${Date.now()}`;
+  document.getElementById("totalReplies").textContent = replies.count || 0;
+  document.getElementById("totalSubmissions").textContent = submissions.count || 0;
+}
 
-  await supabaseClient.from("articles").insert({
-    title,
-    slug,
-    excerpt,
-    content,
-    cover_url: cover,
-    category_id: categoryId,
-    author_id: currentUser.id,
-    writer_name: "Tim Ranex",
-    status: "published"
-  });
+/* =========================
+   LATEST ACTIVITY (SYNC FIX)
+========================= */
+async function loadLatestActivity() {
+  const { data } = await supabaseClient
+    .from("articles")
+    .select("title,status,created_at")
+    .order("created_at", { ascending: false })
+    .limit(5);
 
-  showToast("Berhasil");
-  articleForm.reset();
+  const el = document.getElementById("latestActivity");
+  if (!el) return;
 
-  loadArticles();
-});
+  el.innerHTML = (data || []).map(a => `
+    <div class="admin-list-item">
+      <div>
+        <strong>${a.title}</strong>
+        <span>${a.status} • ${new Date(a.created_at).toLocaleString()}</span>
+      </div>
+    </div>
+  `).join("");
+}
 
 /* =========================
    INIT
@@ -390,9 +399,11 @@ async function initAdmin() {
   if (!ok) return;
 
   await loadCategories();
+  await loadDashboardStats();
   await loadArticles();
   await loadUsers();
   await loadSubmissions();
+  await loadLatestActivity();
 
   lucide.createIcons();
 }
