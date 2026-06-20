@@ -303,3 +303,10 @@ logoutBtn?.addEventListener("click", async () => {
    INIT
 ========================= */
 loadProfile();
+
+const notifBtn = document.getElementById("notifBtn");
+const notifDropdown = document.getElementById("notifDropdown");
+
+notifBtn?.addEventListener("click", () => {
+  notifDropdown.classList.toggle("show");
+});
