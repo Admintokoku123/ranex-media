@@ -321,13 +321,13 @@ async function loadSubmissions() {
   `).join("");
 }
 async function approveSubmission(id) {
-  const { data: submission, error: fetchError } = await supabaseClient
+  const { data: submission, error } = await supabaseClient
     .from("article_submissions")
     .select("*")
     .eq("id", id)
     .single();
 
-  if (fetchError || !submission) {
+  if (error || !submission) {
     showToast("Kiriman tidak ditemukan");
     return;
   }
@@ -340,6 +340,7 @@ async function approveSubmission(id) {
     .eq("name", submission.category)
     .single();
 
+  // insert ke articles
   const { error: insertError } = await supabaseClient
     .from("articles")
     .insert({
@@ -349,24 +350,35 @@ async function approveSubmission(id) {
       content: submission.content,
       cover_url: submission.cover_url,
       category_id: categoryData?.id || null,
-      author_id: currentUser.id,
-     writer_name: submission.writer_name,
-  writer_email: submission.writer_email,
+      author_id: submission.user_id,
+      writer_name: submission.writer_name,
+      writer_email: submission.writer_email,
       status: "published"
     });
 
   if (insertError) {
-    console.error(insertError);
-    showToast("Gagal menyetujui artikel");
+    showToast("Gagal publish artikel");
     return;
   }
 
+  // update submission
   await supabaseClient
     .from("article_submissions")
-    .update({ status: "approved" })
+    .update({
+      status: "approved",
+      rejection_reason: null
+    })
     .eq("id", id);
 
-  showToast("Artikel disetujui dan dipublikasikan");
+  // 🔔 NOTIF USER (MOTIVASI)
+  await supabaseClient.from("notifications").insert({
+    user_id: submission.user_id,
+    title: "Artikel Disetujui 🎉",
+    message:
+      "Selamat! Artikel kamu sudah dipublikasikan. Terus berkarya dan konsisten menulis ya 💪🔥"
+  });
+
+  showToast("Artikel disetujui");
 
   await loadSubmissions();
   await loadArticles();
