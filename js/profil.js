@@ -91,6 +91,7 @@ function subscribeNotifications(userId) {
       (payload) => {
         const n = payload.new;
 
+        // langsung masuk UI
         if (notifList) {
           const el = document.createElement("div");
           el.className = "notif-item unread";
@@ -101,17 +102,18 @@ function subscribeNotifications(userId) {
           notifList.prepend(el);
         }
 
+        // update badge & data full sync
         loadNotifications(userId);
 
-        showNotify(n.title, "success");
-
+        // animasi kecil
         notifBtn?.classList.add("shake");
-        setTimeout(() => notifBtn?.classList.remove("shake"), 600);
+        setTimeout(() => notifBtn?.classList.remove("shake"), 500);
       }
     )
-    .subscribe();
+    .subscribe((status) => {
+      console.log("Realtime status:", status);
+    });
 }
-
 /* =========================
    TAB SYSTEM
 ========================= */
