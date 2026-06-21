@@ -342,18 +342,21 @@ async function approveSubmission(id) {
 
   const { error: insertError } = await supabaseClient
     .from("articles")
-    .insert({
-      title: submission.title,
-      slug,
-      excerpt: submission.excerpt,
-      content: submission.content,
-      cover_url: submission.cover_url,
-      category_id: categoryData?.id || null,
-      author_id: currentUser.id,
-     writer_name: submission.writer_name,
+   .insert({
+  title: submission.title,
+  slug,
+  excerpt: submission.excerpt,
+  content: submission.content,
+  cover_url: submission.cover_url,
+  category_id: categoryData?.id || null,
+
+  author_id: submission.author_id,
+
+  writer_name: submission.writer_name,
   writer_email: submission.writer_email,
-      status: "published"
-    });
+
+  status: "published"
+});
 
   if (insertError) {
     console.error(insertError);
