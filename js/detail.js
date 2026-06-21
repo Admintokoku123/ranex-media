@@ -124,9 +124,7 @@ async function loadArticleDetail() {
 
   const { data, error } = await supabaseClient
     .from("articles")
-    .select(`
-  id,
-  title,
+.select(`
   slug,
   excerpt,
   content,
@@ -134,12 +132,7 @@ async function loadArticleDetail() {
   writer_name,
   writer_email,
   created_at,
-  categories(name),
-  profiles(
-  name,
-  avatar_url,
-  bio
-)
+  categories(name)
 `)
     .eq("slug", slug)
     .eq("status", "published")
