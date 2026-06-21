@@ -124,7 +124,9 @@ async function loadArticleDetail() {
 
   const { data, error } = await supabaseClient
     .from("articles")
-.select(`
+    .select(`
+  id,
+  title,
   slug,
   excerpt,
   content,
@@ -132,7 +134,12 @@ async function loadArticleDetail() {
   writer_name,
   writer_email,
   created_at,
-  categories(name)
+  categories(name),
+  profiles(
+  name,
+  avatar_url,
+  bio
+)
 `)
     .eq("slug", slug)
     .eq("status", "published")
@@ -161,9 +168,6 @@ if (data.writer_email) {
 
   authorProfile = profile;
 
-  console.log("PROFILE", profile);
-
-}
   console.log("PROFILE", profile);
 }
   updateArticleSEO(data);
