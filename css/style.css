@@ -5290,3 +5290,13 @@ html[data-theme="dark"] .site-header {
   width:100%;
   margin:5px 0;
 }
+.admin-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.admin-stats > div {
+  flex: 1 1 200px;
+  min-width: 200px;
+}
