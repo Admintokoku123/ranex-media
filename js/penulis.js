@@ -94,6 +94,27 @@ async function loadContributorAuthor() {
   authorName.textContent =
     authorNameParam;
 
+  const { data: profile } = await supabaseClient
+  .from("profiles")
+  .select("*")
+  .eq("name", authorNameParam)
+  .single();
+
+if (profile) {
+
+  authorBio.textContent =
+    profile.bio ||
+    "Kontributor Ranex Media";
+
+  authorAvatar.src =
+    profile.avatar_url ||
+    "assets/logo-ranex-media.png";
+
+  authorJoinYear.textContent =
+    new Date(profile.created_at).getFullYear();
+
+} else {
+
   authorBio.textContent =
     "Kontributor Ranex Media";
 
@@ -102,6 +123,7 @@ async function loadContributorAuthor() {
 
   authorJoinYear.textContent =
     "2026";
+}
 
   const { data: articles, error } = await supabaseClient
     .from("articles")
