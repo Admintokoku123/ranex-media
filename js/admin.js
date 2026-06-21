@@ -1,5 +1,3 @@
-admin js 
-
 let currentUser = null;
 let currentProfile = null;
 
