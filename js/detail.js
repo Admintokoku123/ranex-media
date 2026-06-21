@@ -135,7 +135,11 @@ async function loadArticleDetail() {
   writer_email,
   created_at,
   categories(name),
-  profiles(name)
+  profiles(
+  name,
+  avatar_url,
+  bio
+)
 `)
     .eq("slug", slug)
     .eq("status", "published")
@@ -166,6 +170,9 @@ document.getElementById("authorBoxName");
 const authorBoxBio =
 document.getElementById("authorBoxBio");
 
+  const authorBoxAvatar =
+document.getElementById("authorBoxAvatar");
+
 const authorProfileLink =
 document.getElementById("authorProfileLink");
 
@@ -187,6 +194,12 @@ if(authorBoxBio){
 
     authorBoxBio.textContent =
       "Kontributor Ranex Media.";
+    
+    if (authorBoxAvatar) {
+  authorBoxAvatar.src =
+    data.profiles?.avatar_url ||
+    "assets/logo-ranex-media.png";
+}
 
   }else{
 
