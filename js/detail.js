@@ -169,6 +169,9 @@ if (data.writer_email) {
   authorProfile = profile;
 
   console.log("PROFILE", profile);
+
+}
+  console.log("PROFILE", profile);
 }
   updateArticleSEO(data);
 
