@@ -62,11 +62,14 @@ async function loadDashboardStats() {
 /* =========================
    INIT PART 1
 ========================= */
+
 async function initAdmin() {
   const ok = await checkAdminAccess();
   if (!ok) return;
 
   await loadDashboardStats();
+  await loadArticles();
+  await loadLatestActivity();
 }
 
 initAdmin();
