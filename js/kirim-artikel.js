@@ -149,10 +149,16 @@ submitArticleForm?.addEventListener("submit", async (e) => {
 
   try {
     const coverUrl = await uploadSubmissionCover();
+    const { data: sessionData } =
+  await supabaseClient.auth.getSession();
+
+const authorId =
+  sessionData.session.user.id;
 
     const { error } = await supabaseClient
       .from("article_submissions")
       .insert({
+        author_id: authorId,
         writer_name: writerName,
         writer_email: writerEmail,
         title,
