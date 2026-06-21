@@ -189,6 +189,9 @@ document.getElementById("authorBoxBio");
   const authorBoxAvatar =
 document.getElementById("authorBoxAvatar");
 
+  const detailAuthorAvatar =
+document.getElementById("detailAuthorAvatar");
+
 const authorProfileLink =
 document.getElementById("authorProfileLink");
 
@@ -215,12 +218,17 @@ if(authorBoxBio){
   authorProfile?.bio ||
   "Kontributor Ranex Media";
     
-    if (authorBoxAvatar) {
- authorBoxAvatar.src =
-  authorProfile?.avatar_url ||
-  "assets/logo-ranex-media.png";
+  if (authorBoxAvatar) {
+  authorBoxAvatar.src =
+    authorProfile?.avatar_url ||
+    "assets/logo-ranex-media.png";
 }
 
+if (detailAuthorAvatar) {
+  detailAuthorAvatar.src =
+    authorProfile?.avatar_url ||
+    "assets/logo-ranex-media.png";
+}
   }else{
 
     authorBoxBio.textContent =
