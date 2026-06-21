@@ -170,7 +170,7 @@ if (data.writer_email) {
 authorProfile = profile;
 
 console.log("PROFILE", profile);
-  
+  }
   updateArticleSEO(data);
 
   detailCategory.textContent = data.categories?.name || "Artikel";
