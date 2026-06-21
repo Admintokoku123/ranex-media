@@ -265,7 +265,22 @@ detailDate.textContent = `${formatDate(data.created_at)} • ${readTime} menit b
   detailCover.src = data.cover_url || "assets/logo-ranex-media.png";
   detailCover.alt = data.title;
 
-  detailContent.innerHTML = formatContent(data.content);
+  const formattedContent = formatContent(data.content);
+
+// ambil paragraf
+let paragraphs = formattedContent.split("</p>").filter(p => p.trim() !== "");
+
+// sisip CTA di tengah
+if (paragraphs.length > 2) {
+  const mid = Math.floor(paragraphs.length / 2);
+
+  paragraphs.splice(mid, 0, `
+    <div rrm-inline-cta="5f1d9c8c-b14b-41b6-b091-4d7c89680167"></div>
+  `);
+}
+
+// render ulang
+detailContent.innerHTML = paragraphs.join("</p>");
 
   detailTags.innerHTML = `
     <span>${data.categories?.name || "Artikel"}</span>
