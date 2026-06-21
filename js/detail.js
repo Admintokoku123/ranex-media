@@ -156,18 +156,20 @@ async function loadArticleDetail() {
   currentArticle = data;
   console.log("ARTICLE", data);
 console.log("AUTHOR ID", data.author_id);
-  let authorProfile = null;
+ let authorProfile = null;
 
-if (data.author_id) {
+if (data.writer_email) {
+
   const { data: profile } = await supabaseClient
     .from("profiles")
     .select("*")
-    .eq("id", data.author_id)
+    .eq("email", data.writer_email)
     .single();
 
   authorProfile = profile;
-}
 
+  console.log("PROFILE", profile);
+}
   updateArticleSEO(data);
 
   detailCategory.textContent = data.categories?.name || "Artikel";
