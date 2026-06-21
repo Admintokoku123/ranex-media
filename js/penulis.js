@@ -99,6 +99,10 @@ async function loadContributorAuthor() {
   .select("*")
   .eq("name", authorNameParam)
   .single();
+  console.log("authorNameParam:", authorNameParam);
+console.log("profile:", profile);
+console.log("avatar:", profile?.avatar_url);
+console.log("authorAvatar element:", authorAvatar);
 
 if (profile) {
 
