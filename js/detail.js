@@ -267,20 +267,22 @@ detailDate.textContent = `${formatDate(data.created_at)} • ${readTime} menit b
 
   const formattedContent = formatContent(data.content);
 
-// ambil paragraf
-let paragraphs = formattedContent.split("</p>").filter(p => p.trim() !== "");
+// ambil semua tag <p>...</p>
+const paragraphs = formattedContent.match(/<p>.*?<\/p>/gs) || [];
 
-// sisip CTA di tengah
+// sisip CTA di tengah artikel
 if (paragraphs.length > 2) {
   const mid = Math.floor(paragraphs.length / 2);
 
-  paragraphs.splice(mid, 0, `
-    <div rrm-inline-cta="5f1d9c8c-b14b-41b6-b091-4d7c89680167"></div>
-  `);
+  paragraphs.splice(
+    mid,
+    0,
+    `<div rrm-inline-cta="5f1d9c8c-b14b-41b6-b091-4d7c89680167"></div>`
+  );
 }
 
 // render ulang
-detailContent.innerHTML = paragraphs.join("</p>");
+detailContent.innerHTML = paragraphs.join("");
 
   detailTags.innerHTML = `
     <span>${data.categories?.name || "Artikel"}</span>
