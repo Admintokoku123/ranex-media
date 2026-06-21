@@ -131,6 +131,7 @@ async function loadArticleDetail() {
   excerpt,
   content,
   cover_url,
+  author_id,
   writer_name,
   writer_email,
   created_at,
@@ -160,16 +161,16 @@ console.log("AUTHOR ID", data.author_id);
 
 if (data.writer_email) {
 
-  const { data: profile } = await supabaseClient
-    .from("profiles")
-    .select("*")
-    .eq("email", data.writer_email)
-    .single();
+ const { data: profile } = await supabaseClient
+  .from("profiles")
+  .select("*")
+  .eq("id", data.author_id)
+  .single();
 
-  authorProfile = profile;
+authorProfile = profile;
 
-  console.log("PROFILE", profile);
-}
+console.log("PROFILE", profile);
+  
   updateArticleSEO(data);
 
   detailCategory.textContent = data.categories?.name || "Artikel";
@@ -202,7 +203,8 @@ const authorNameValue =
 if(authorBoxName){
  authorBoxName.textContent =
   authorProfile?.name ||
-  data.writer_name;
+  data.writer_name ||
+  "Kontributor";
 }
 
 if(authorBoxBio){
