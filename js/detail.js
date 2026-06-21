@@ -154,6 +154,8 @@ async function loadArticleDetail() {
   }
 
   currentArticle = data;
+  console.log("ARTICLE", data);
+console.log("AUTHOR ID", data.author_id);
   let authorProfile = null;
 
 if (data.author_id) {
