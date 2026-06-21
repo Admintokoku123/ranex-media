@@ -154,6 +154,17 @@ async function loadArticleDetail() {
   }
 
   currentArticle = data;
+  let authorProfile = null;
+
+if (data.author_id) {
+  const { data: profile } = await supabaseClient
+    .from("profiles")
+    .select("*")
+    .eq("id", data.author_id)
+    .single();
+
+  authorProfile = profile;
+}
 
   updateArticleSEO(data);
 
@@ -185,7 +196,9 @@ const authorNameValue =
   "Tim Ranex Media";
 
 if(authorBoxName){
-  authorBoxName.textContent = authorNameValue;
+ authorBoxName.textContent =
+  authorProfile?.name ||
+  data.writer_name;
 }
 
 if(authorBoxBio){
@@ -193,12 +206,13 @@ if(authorBoxBio){
   if(data.writer_name){
 
     authorBoxBio.textContent =
-      "Kontributor Ranex Media.";
+  authorProfile?.bio ||
+  "Kontributor Ranex Media";
     
     if (authorBoxAvatar) {
-  authorBoxAvatar.src =
-    data.profiles?.avatar_url ||
-    "assets/logo-ranex-media.png";
+ authorBoxAvatar.src =
+  authorProfile?.avatar_url ||
+  "assets/logo-ranex-media.png";
 }
 
   }else{
