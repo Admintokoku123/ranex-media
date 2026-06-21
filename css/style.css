@@ -5079,3 +5079,18 @@ html[data-theme="dark"] .site-header {
   border-radius: 50%;
   flex-shrink: 0;
 }
+/* Avatar Penulis */
+.author-avatar{
+  overflow:hidden;
+  background:#eef2f7;
+}
+
+.author-avatar img,
+#authorBoxAvatar,
+#detailAuthorAvatar{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center;
+  display:block;
+}
