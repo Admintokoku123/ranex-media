@@ -1,5 +1,3 @@
-profil.js
-
 const profileMenuButtons = document.querySelectorAll(".profile-menu button");
 const profileTabs = document.querySelectorAll(".profile-tab");
 const logoutBtn = document.getElementById("logoutBtn");
