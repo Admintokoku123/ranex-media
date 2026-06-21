@@ -124,6 +124,22 @@ async function uploadSubmissionCover() {
 
 submitArticleForm?.addEventListener("submit", async (e) => {
   e.preventDefault();
+  const { data: sessionData } =
+  await supabaseClient.auth.getSession();
+
+if (!sessionData.session) {
+
+  safeToast("Silakan login terlebih dahulu");
+
+  setTimeout(() => {
+    window.location.href = "login.html";
+  }, 1000);
+
+  return;
+}
+
+const authorId =
+  sessionData.session.user.id;
 
   const writerName = document.getElementById("writerName").value.trim();
   const writerEmail = document.getElementById("writerEmail").value.trim();
