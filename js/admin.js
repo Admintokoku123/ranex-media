@@ -200,8 +200,6 @@ async function loadArticles() {
     return;
   }
 
-  document.getElementById("totalArticles").textContent = data.length;
-
   if (!data.length) {
     const empty = `
       <div class="admin-list-item">
