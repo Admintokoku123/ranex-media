@@ -1,4 +1,22 @@
 const submitArticleForm = document.getElementById("submitArticleForm");
+async function checkSubmissionLogin() {
+
+  const { data } =
+    await supabaseClient.auth.getSession();
+
+  if (!data.session) {
+
+    safeToast("Silakan login terlebih dahulu");
+
+    setTimeout(() => {
+      window.location.href = "login.html";
+    }, 1000);
+
+    return false;
+  }
+
+  return true;
+}
 const submissionCover = document.getElementById("submissionCover");
 const submissionCoverPreview = document.getElementById("submissionCoverPreview");
 const submitCategory = document.getElementById("submitCategory");
@@ -170,6 +188,13 @@ submitArticleForm?.addEventListener("submit", async (e) => {
 
 loadSubmitCategories();
 
-if (window.lucide) {
-  lucide.createIcons();
-}
+(async () => {
+
+  const allowed =
+    await checkSubmissionLogin();
+
+  if (!allowed) return;
+
+  loadSubmitCategories();
+
+})();
