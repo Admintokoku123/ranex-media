@@ -310,6 +310,17 @@
 <script src="js/supabase.js"></script>
 <script src="js/main.js"></script>
 <script src="js/detail.js"></script>
+<script async src="https://news.google.com/swg/js/v1/swg-basic.js"></script>
 
+<script>
+  (self.SWG_BASIC = self.SWG_BASIC || []).push(basicSubscriptions => {
+    basicSubscriptions.init({
+      type: "NewsArticle",
+      isPartOfType: ["Product"],
+      isPartOfProductId: "CAowxIPHDA:openaccess",
+      clientOptions: { theme: "light", lang: "id" }
+    });
+  });
+</script>
 </body>
 </html>
